@@ -1,0 +1,539 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00000001 /* StormModeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000002 /* StormModeApp.swift */; };
+		00000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000004 /* ContentView.swift */; };
+		00000005 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00000006 /* Assets.xcassets */; };
+		00000007 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000008 /* Colors.swift */; };
+		00000009 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000A /* Typography.swift */; };
+		0000000B /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000C /* Styles.swift */; };
+		0000000D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000E /* User.swift */; };
+		0000000F /* Referral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000010 /* Referral.swift */; };
+		00000011 /* TransportRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000012 /* TransportRequest.swift */; };
+		00000013 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000014 /* Task.swift */; };
+		00000015 /* StormState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000016 /* StormState.swift */; };
+		00000017 /* CheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000018 /* CheckIn.swift */; };
+		00000019 /* MockDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000001A /* MockDataService.swift */; };
+		0000001B /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000001C /* AuthViewModel.swift */; };
+		0000001D /* PatientViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000001E /* PatientViewModel.swift */; };
+		0000001F /* VolunteerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000020 /* VolunteerViewModel.swift */; };
+		00000021 /* ClinicStaffViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000022 /* ClinicStaffViewModel.swift */; };
+		00000023 /* StormBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000024 /* StormBanner.swift */; };
+		00000025 /* ReferralCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000026 /* ReferralCard.swift */; };
+		00000027 /* RequestCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000028 /* RequestCard.swift */; };
+		00000029 /* TaskCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000002A /* TaskCard.swift */; };
+		0000002B /* ProgressBubbles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000002C /* ProgressBubbles.swift */; };
+		0000002D /* CheckInCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000002E /* CheckInCard.swift */; };
+		0000002F /* PatientHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000030 /* PatientHomeView.swift */; };
+		00000031 /* ReferralDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000032 /* ReferralDetailView.swift */; };
+		00000033 /* CreateRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000034 /* CreateRequestView.swift */; };
+		00000035 /* VolunteerHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000036 /* VolunteerHomeView.swift */; };
+		00000037 /* StaffDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000038 /* StaffDashboardView.swift */; };
+		00000039 /* CreateReferralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000003A /* CreateReferralView.swift */; };
+		0000003B /* TasksListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000003C /* TasksListView.swift */; };
+		3ED503892F2F253D0047CB12 /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED503882F2F253D0047CB12 /* OpenAIService.swift */; };
+		58B741999AA5D56B059BAB51 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8B4EC69E7935D93D7F5663 /* WeatherService.swift */; };
+		62D94A7282260FDCB977F283 /* AIStormService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51534EB5A986A04D09562C19 /* AIStormService.swift */; };
+		99924FE1A928A64FCCCCB0F5 /* WeatherBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1E47B1A48D331D9E60E5B2 /* WeatherBackgroundView.swift */; };
+		A5B44055BC1FB6009FB00B79 /* StormThreatCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B248E1963F72D641CCBE84 /* StormThreatCard.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		00000002 /* StormModeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StormModeApp.swift; sourceTree = "<group>"; };
+		00000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		00000006 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		00000008 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		0000000A /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
+		0000000C /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
+		0000000E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		00000010 /* Referral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Referral.swift; sourceTree = "<group>"; };
+		00000012 /* TransportRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportRequest.swift; sourceTree = "<group>"; };
+		00000014 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		00000016 /* StormState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StormState.swift; sourceTree = "<group>"; };
+		00000018 /* CheckIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckIn.swift; sourceTree = "<group>"; };
+		0000001A /* MockDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataService.swift; sourceTree = "<group>"; };
+		0000001C /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		0000001E /* PatientViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientViewModel.swift; sourceTree = "<group>"; };
+		00000020 /* VolunteerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolunteerViewModel.swift; sourceTree = "<group>"; };
+		00000022 /* ClinicStaffViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClinicStaffViewModel.swift; sourceTree = "<group>"; };
+		00000024 /* StormBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StormBanner.swift; sourceTree = "<group>"; };
+		00000026 /* ReferralCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralCard.swift; sourceTree = "<group>"; };
+		00000028 /* RequestCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCard.swift; sourceTree = "<group>"; };
+		0000002A /* TaskCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCard.swift; sourceTree = "<group>"; };
+		0000002C /* ProgressBubbles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBubbles.swift; sourceTree = "<group>"; };
+		0000002E /* CheckInCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCard.swift; sourceTree = "<group>"; };
+		00000030 /* PatientHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientHomeView.swift; sourceTree = "<group>"; };
+		00000032 /* ReferralDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralDetailView.swift; sourceTree = "<group>"; };
+		00000034 /* CreateRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestView.swift; sourceTree = "<group>"; };
+		00000036 /* VolunteerHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolunteerHomeView.swift; sourceTree = "<group>"; };
+		00000038 /* StaffDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffDashboardView.swift; sourceTree = "<group>"; };
+		0000003A /* CreateReferralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReferralView.swift; sourceTree = "<group>"; };
+		0000003C /* TasksListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksListView.swift; sourceTree = "<group>"; };
+		00000100 /* StormMode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StormMode.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3ED503882F2F253D0047CB12 /* OpenAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
+		51534EB5A986A04D09562C19 /* AIStormService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AIStormService.swift; path = StormMode/Services/AIStormService.swift; sourceTree = SOURCE_ROOT; };
+		6E8B4EC69E7935D93D7F5663 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WeatherService.swift; path = StormMode/Services/WeatherService.swift; sourceTree = SOURCE_ROOT; };
+		B6B248E1963F72D641CCBE84 /* StormThreatCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StormThreatCard.swift; path = StormMode/Views/Components/StormThreatCard.swift; sourceTree = SOURCE_ROOT; };
+		BD1E47B1A48D331D9E60E5B2 /* WeatherBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WeatherBackgroundView.swift; path = StormMode/Views/Components/WeatherBackgroundView.swift; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		00000200 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		00000300 = {
+			isa = PBXGroup;
+			children = (
+				00000301 /* StormMode */,
+				00000302 /* Products */,
+				6E8B4EC69E7935D93D7F5663 /* WeatherService.swift */,
+				51534EB5A986A04D09562C19 /* AIStormService.swift */,
+				BD1E47B1A48D331D9E60E5B2 /* WeatherBackgroundView.swift */,
+				B6B248E1963F72D641CCBE84 /* StormThreatCard.swift */,
+			);
+			sourceTree = "<group>";
+		};
+		00000301 /* StormMode */ = {
+			isa = PBXGroup;
+			children = (
+				00000002 /* StormModeApp.swift */,
+				00000004 /* ContentView.swift */,
+				00000303 /* Models */,
+				00000304 /* Services */,
+				00000305 /* ViewModels */,
+				00000306 /* Views */,
+				00000307 /* Design */,
+				00000006 /* Assets.xcassets */,
+			);
+			path = StormMode;
+			sourceTree = "<group>";
+		};
+		00000302 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				00000100 /* StormMode.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		00000303 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0000000E /* User.swift */,
+				00000010 /* Referral.swift */,
+				00000012 /* TransportRequest.swift */,
+				00000014 /* Task.swift */,
+				00000016 /* StormState.swift */,
+				00000018 /* CheckIn.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		00000304 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				3ED503882F2F253D0047CB12 /* OpenAIService.swift */,
+				0000001A /* MockDataService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		00000305 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				0000001C /* AuthViewModel.swift */,
+				0000001E /* PatientViewModel.swift */,
+				00000020 /* VolunteerViewModel.swift */,
+				00000022 /* ClinicStaffViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		00000306 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				00000308 /* Components */,
+				00000309 /* Patient */,
+				0000030A /* Volunteer */,
+				0000030B /* ClinicStaff */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		00000307 /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				00000008 /* Colors.swift */,
+				0000000A /* Typography.swift */,
+				0000000C /* Styles.swift */,
+			);
+			path = Design;
+			sourceTree = "<group>";
+		};
+		00000308 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				00000024 /* StormBanner.swift */,
+				00000026 /* ReferralCard.swift */,
+				00000028 /* RequestCard.swift */,
+				0000002A /* TaskCard.swift */,
+				0000002C /* ProgressBubbles.swift */,
+				0000002E /* CheckInCard.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		00000309 /* Patient */ = {
+			isa = PBXGroup;
+			children = (
+				00000030 /* PatientHomeView.swift */,
+				00000032 /* ReferralDetailView.swift */,
+				00000034 /* CreateRequestView.swift */,
+			);
+			path = Patient;
+			sourceTree = "<group>";
+		};
+		0000030A /* Volunteer */ = {
+			isa = PBXGroup;
+			children = (
+				00000036 /* VolunteerHomeView.swift */,
+			);
+			path = Volunteer;
+			sourceTree = "<group>";
+		};
+		0000030B /* ClinicStaff */ = {
+			isa = PBXGroup;
+			children = (
+				00000038 /* StaffDashboardView.swift */,
+				0000003A /* CreateReferralView.swift */,
+				0000003C /* TasksListView.swift */,
+			);
+			path = ClinicStaff;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		00000400 /* StormMode */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00000500 /* Build configuration list for PBXNativeTarget "StormMode" */;
+			buildPhases = (
+				00000401 /* Sources */,
+				00000200 /* Frameworks */,
+				00000402 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StormMode;
+			productName = StormMode;
+			productReference = 00000100 /* StormMode.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		00000600 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					00000400 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 00000700 /* Build configuration list for PBXProject "StormMode" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 00000300;
+			productRefGroup = 00000302 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				00000400 /* StormMode */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		00000402 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00000005 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		00000401 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00000001 /* StormModeApp.swift in Sources */,
+				3ED503892F2F253D0047CB12 /* OpenAIService.swift in Sources */,
+				00000003 /* ContentView.swift in Sources */,
+				00000007 /* Colors.swift in Sources */,
+				00000009 /* Typography.swift in Sources */,
+				0000000B /* Styles.swift in Sources */,
+				0000000D /* User.swift in Sources */,
+				0000000F /* Referral.swift in Sources */,
+				00000011 /* TransportRequest.swift in Sources */,
+				00000013 /* Task.swift in Sources */,
+				00000015 /* StormState.swift in Sources */,
+				00000017 /* CheckIn.swift in Sources */,
+				00000019 /* MockDataService.swift in Sources */,
+				0000001B /* AuthViewModel.swift in Sources */,
+				0000001D /* PatientViewModel.swift in Sources */,
+				0000001F /* VolunteerViewModel.swift in Sources */,
+				00000021 /* ClinicStaffViewModel.swift in Sources */,
+				00000023 /* StormBanner.swift in Sources */,
+				00000025 /* ReferralCard.swift in Sources */,
+				00000027 /* RequestCard.swift in Sources */,
+				00000029 /* TaskCard.swift in Sources */,
+				0000002B /* ProgressBubbles.swift in Sources */,
+				0000002D /* CheckInCard.swift in Sources */,
+				0000002F /* PatientHomeView.swift in Sources */,
+				00000031 /* ReferralDetailView.swift in Sources */,
+				00000033 /* CreateRequestView.swift in Sources */,
+				00000035 /* VolunteerHomeView.swift in Sources */,
+				00000037 /* StaffDashboardView.swift in Sources */,
+				00000039 /* CreateReferralView.swift in Sources */,
+				0000003B /* TasksListView.swift in Sources */,
+				58B741999AA5D56B059BAB51 /* WeatherService.swift in Sources */,
+				62D94A7282260FDCB977F283 /* AIStormService.swift in Sources */,
+				99924FE1A928A64FCCCCB0F5 /* WeatherBackgroundView.swift in Sources */,
+				A5B44055BC1FB6009FB00B79 /* StormThreatCard.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		00000501 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "StormMode needs your location to show local weather conditions and predict storms.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stormmode.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		00000502 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "StormMode needs your location to show local weather conditions and predict storms.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stormmode.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		00000701 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		00000702 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		00000500 /* Build configuration list for PBXNativeTarget "StormMode" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00000501 /* Debug */,
+				00000502 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		00000700 /* Build configuration list for PBXProject "StormMode" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00000701 /* Debug */,
+				00000702 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 00000600 /* Project object */;
+}

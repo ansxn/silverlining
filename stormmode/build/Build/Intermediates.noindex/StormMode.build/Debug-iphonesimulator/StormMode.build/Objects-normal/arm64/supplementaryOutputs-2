@@ -1,0 +1,23 @@
+{
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/Design/Styles.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/Styles.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/Styles.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/Styles.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/Styles.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/Styles.swiftdeps"
+  },
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/Models/Referral.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/Referral.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/Referral.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/Referral.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/Referral.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/Referral.swiftdeps"
+  },
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/Models/User.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/User.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/User.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/User.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/User.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/User.swiftdeps"
+  }
+}

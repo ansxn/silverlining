@@ -1,0 +1,23 @@
+{
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/Views/Components/ReferralCard.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/ReferralCard.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/ReferralCard.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/ReferralCard.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/ReferralCard.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/ReferralCard.swiftdeps"
+  },
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/Views/Components/RequestCard.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/RequestCard.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/RequestCard.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/RequestCard.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/RequestCard.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/RequestCard.swiftdeps"
+  },
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/Views/Components/StormBanner.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/StormBanner.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/StormBanner.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/StormBanner.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/StormBanner.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/StormBanner.swiftdeps"
+  }
+}

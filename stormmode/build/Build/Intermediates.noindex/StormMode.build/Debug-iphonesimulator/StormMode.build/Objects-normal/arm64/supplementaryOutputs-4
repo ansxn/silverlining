@@ -1,0 +1,23 @@
+{
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/Models/CheckIn.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CheckIn.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CheckIn.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CheckIn.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CheckIn.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CheckIn.swiftdeps"
+  },
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/Services/MockDataService.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/MockDataService.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/MockDataService.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/MockDataService.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/MockDataService.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/MockDataService.swiftdeps"
+  },
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/ViewModels/AuthViewModel.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/AuthViewModel.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/AuthViewModel.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/AuthViewModel.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/AuthViewModel.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/AuthViewModel.swiftdeps"
+  }
+}

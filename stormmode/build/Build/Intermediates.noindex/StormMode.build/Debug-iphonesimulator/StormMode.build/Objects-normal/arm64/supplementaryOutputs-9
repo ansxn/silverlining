@@ -1,0 +1,23 @@
+{
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/Views/ClinicStaff/CreateReferralView.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CreateReferralView.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CreateReferralView.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CreateReferralView.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CreateReferralView.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CreateReferralView.swiftdeps"
+  },
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/Views/ClinicStaff/StaffDashboardView.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/StaffDashboardView.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/StaffDashboardView.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/StaffDashboardView.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/StaffDashboardView.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/StaffDashboardView.swiftdeps"
+  },
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/Views/Volunteer/VolunteerHomeView.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/VolunteerHomeView.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/VolunteerHomeView.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/VolunteerHomeView.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/VolunteerHomeView.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/VolunteerHomeView.swiftdeps"
+  }
+}

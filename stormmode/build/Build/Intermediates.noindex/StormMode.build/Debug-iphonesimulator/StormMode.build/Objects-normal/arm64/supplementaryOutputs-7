@@ -1,0 +1,23 @@
+{
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/Views/Components/CheckInCard.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CheckInCard.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CheckInCard.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CheckInCard.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CheckInCard.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/CheckInCard.swiftdeps"
+  },
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/Views/Components/ProgressBubbles.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/ProgressBubbles.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/ProgressBubbles.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/ProgressBubbles.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/ProgressBubbles.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/ProgressBubbles.swiftdeps"
+  },
+  "/Users/anson/Documents/silverlining/stormmode/StormMode/Views/Components/TaskCard.swift" : {
+    "const-values" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/TaskCard.swiftconstvalues",
+    "dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/TaskCard.d",
+    "diagnostics" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/TaskCard.dia",
+    "object" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/TaskCard.o",
+    "swift-dependencies" : "/Users/anson/Documents/silverlining/stormmode/build/Build/Intermediates.noindex/StormMode.build/Debug-iphonesimulator/StormMode.build/Objects-normal/arm64/TaskCard.swiftdeps"
+  }
+}

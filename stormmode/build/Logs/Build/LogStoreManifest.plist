@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>logFormatVersion</key>
+	<integer>12</integer>
+	<key>logs</key>
+	<dict>
+		<key>DB7FBD13-5ACD-4808-9F8C-DE0BE45D89F1</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>DB7FBD13-5ACD-4808-9F8C-DE0BE45D89F1.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+				<key>totalNumberOfAnalyzerIssues</key>
+				<integer>0</integer>
+				<key>totalNumberOfErrors</key>
+				<integer>1</integer>
+				<key>totalNumberOfTestFailures</key>
+				<integer>0</integer>
+				<key>totalNumberOfWarnings</key>
+				<integer>0</integer>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>StormMode project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>StormMode</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Building project StormMode with scheme StormMode</string>
+			<key>timeStartedRecording</key>
+			<real>791610079.51961195</real>
+			<key>timeStoppedRecording</key>
+			<real>791610083.24577606</real>
+			<key>title</key>
+			<string>Building project StormMode with scheme StormMode</string>
+			<key>uniqueIdentifier</key>
+			<string>DB7FBD13-5ACD-4808-9F8C-DE0BE45D89F1</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

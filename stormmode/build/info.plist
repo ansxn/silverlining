@@ -2,7 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>StormMode needs your location to show local weather conditions and predict storms that may affect patient care.</string>
+	<key>LastAccessedDate</key>
+	<date>2026-02-01T03:41:19Z</date>
+	<key>WorkspacePath</key>
+	<string>/Users/anson/Documents/silverlining/stormmode/StormMode.xcodeproj</string>
 </dict>
 </plist>
