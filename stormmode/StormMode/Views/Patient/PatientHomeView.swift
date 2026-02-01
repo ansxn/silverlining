@@ -6,6 +6,7 @@ struct PatientHomeView: View {
     @StateObject private var viewModel = PatientViewModel()
     @ObservedObject var dataService = MockDataService.shared
     @State private var showCreateRequest = false
+    @State private var showStormCheckIn = false
     @State private var selectedReferral: Referral?
     
     var body: some View {
@@ -20,9 +21,11 @@ struct PatientHomeView: View {
                         WeatherStatusBar()
                             .padding(.top, 8)
                         
-                        // Storm Banner
+                        // Storm Check-In Prompt (when storm mode is active)
                         if dataService.stormState.isStormMode {
-                            StormBanner(isActive: true)
+                            StormCheckInPrompt {
+                                showStormCheckIn = true
+                            }
                         }
                     
                     // Greeting Card
@@ -90,6 +93,9 @@ struct PatientHomeView: View {
             }
             .sheet(item: $selectedReferral) { referral in
                 ReferralDetailView(referral: referral)
+            }
+            .fullScreenCover(isPresented: $showStormCheckIn) {
+                StormCheckInView()
             }
         }
     }
@@ -610,6 +616,65 @@ struct SectionHeader: View {
     }
 }
 
+// MARK: - Storm Check-In Prompt
+
+struct StormCheckInPrompt: View {
+    let onTap: () -> Void
+    @State private var isPulsing = false
+    
+    var body: some View {
+        Button(action: onTap) {
+            HStack(spacing: 16) {
+                // Animated icon
+                ZStack {
+                    Circle()
+                        .fill(Color.white.opacity(0.2))
+                        .frame(width: 50, height: 50)
+                        .scaleEffect(isPulsing ? 1.2 : 1.0)
+                        .opacity(isPulsing ? 0.5 : 1.0)
+                    
+                    Image(systemName: "heart.circle.fill")
+                        .font(.system(size: 28))
+                        .foregroundColor(.white)
+                }
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Storm Check-In")
+                        .font(.system(size: 17, weight: .bold))
+                        .foregroundColor(.white)
+                    
+                    Text("Tap to let us know you're safe")
+                        .font(.system(size: 13))
+                        .foregroundColor(.white.opacity(0.8))
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right.circle.fill")
+                    .font(.system(size: 24))
+                    .foregroundColor(.white.opacity(0.6))
+            }
+            .padding(16)
+            .background(
+                LinearGradient(
+                    colors: [Color.stormActive, Color.stormActive.opacity(0.8)],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+            .cornerRadius(20)
+            .shadow(color: Color.stormActive.opacity(0.4), radius: 12, x: 0, y: 6)
+        }
+        .buttonStyle(.plain)
+        .onAppear {
+            withAnimation(.easeInOut(duration: 1.2).repeatForever(autoreverses: true)) {
+                isPulsing = true
+            }
+        }
+    }
+}
+
 #Preview {
     PatientHomeView()
 }
+

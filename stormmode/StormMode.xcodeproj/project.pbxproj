@@ -50,6 +50,9 @@
 		3ED503962F2F5E910047CB12 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3ED503952F2F5E910047CB12 /* FirebaseFirestore */; };
 		3ED503982F2F5FAE0047CB12 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED503972F2F5FAD0047CB12 /* FirebaseService.swift */; };
 		3ED5039A2F2F60B30047CB12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3ED503992F2F60B30047CB12 /* GoogleService-Info.plist */; };
+		3ED5039C2F2F6A9E0047CB12 /* ReferralsTrackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED5039B2F2F6A9E0047CB12 /* ReferralsTrackingView.swift */; };
+		3ED5039E2F2F72970047CB12 /* UnassignedRidesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED5039D2F2F72970047CB12 /* UnassignedRidesView.swift */; };
+		3ED503A02F2F792A0047CB12 /* StormCheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED5039F2F2F792A0047CB12 /* StormCheckInView.swift */; };
 		58B741999AA5D56B059BAB51 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8B4EC69E7935D93D7F5663 /* WeatherService.swift */; };
 		62D94A7282260FDCB977F283 /* AIStormService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51534EB5A986A04D09562C19 /* AIStormService.swift */; };
 		99924FE1A928A64FCCCCB0F5 /* WeatherBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1E47B1A48D331D9E60E5B2 /* WeatherBackgroundView.swift */; };
@@ -99,6 +102,9 @@
 		3ED503912F2F31100047CB12 /* PlaybookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybookView.swift; sourceTree = "<group>"; };
 		3ED503972F2F5FAD0047CB12 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		3ED503992F2F60B30047CB12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3ED5039B2F2F6A9E0047CB12 /* ReferralsTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralsTrackingView.swift; sourceTree = "<group>"; };
+		3ED5039D2F2F72970047CB12 /* UnassignedRidesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnassignedRidesView.swift; sourceTree = "<group>"; };
+		3ED5039F2F2F792A0047CB12 /* StormCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StormCheckInView.swift; sourceTree = "<group>"; };
 		51534EB5A986A04D09562C19 /* AIStormService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AIStormService.swift; path = StormMode/Services/AIStormService.swift; sourceTree = SOURCE_ROOT; };
 		6E8B4EC69E7935D93D7F5663 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WeatherService.swift; path = StormMode/Services/WeatherService.swift; sourceTree = SOURCE_ROOT; };
 		B6B248E1963F72D641CCBE84 /* StormThreatCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StormThreatCard.swift; path = StormMode/Views/Components/StormThreatCard.swift; sourceTree = SOURCE_ROOT; };
@@ -231,6 +237,7 @@
 		00000309 /* Patient */ = {
 			isa = PBXGroup;
 			children = (
+				3ED5039F2F2F792A0047CB12 /* StormCheckInView.swift */,
 				00000030 /* PatientHomeView.swift */,
 				00000032 /* ReferralDetailView.swift */,
 				00000034 /* CreateRequestView.swift */,
@@ -249,6 +256,8 @@
 		0000030B /* ClinicStaff */ = {
 			isa = PBXGroup;
 			children = (
+				3ED5039D2F2F72970047CB12 /* UnassignedRidesView.swift */,
+				3ED5039B2F2F6A9E0047CB12 /* ReferralsTrackingView.swift */,
 				00000038 /* StaffDashboardView.swift */,
 				0000003A /* CreateReferralView.swift */,
 				0000003C /* TasksListView.swift */,
@@ -345,14 +354,17 @@
 				00000013 /* Task.swift in Sources */,
 				00000015 /* StormState.swift in Sources */,
 				00000017 /* CheckIn.swift in Sources */,
+				3ED503A02F2F792A0047CB12 /* StormCheckInView.swift in Sources */,
 				00000019 /* MockDataService.swift in Sources */,
 				0000001B /* AuthViewModel.swift in Sources */,
 				0000001D /* PatientViewModel.swift in Sources */,
 				0000001F /* VolunteerViewModel.swift in Sources */,
+				3ED5039E2F2F72970047CB12 /* UnassignedRidesView.swift in Sources */,
 				00000021 /* ClinicStaffViewModel.swift in Sources */,
 				00000023 /* StormBanner.swift in Sources */,
 				00000025 /* ReferralCard.swift in Sources */,
 				00000027 /* RequestCard.swift in Sources */,
+				3ED5039C2F2F6A9E0047CB12 /* ReferralsTrackingView.swift in Sources */,
 				00000029 /* TaskCard.swift in Sources */,
 				0000002B /* ProgressBubbles.swift in Sources */,
 				0000002D /* CheckInCard.swift in Sources */,

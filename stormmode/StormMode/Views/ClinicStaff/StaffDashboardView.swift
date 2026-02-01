@@ -9,6 +9,8 @@ struct StaffDashboardView: View {
     @State private var showTasksList = false
     @State private var showResponderList = false
     @State private var showPlaybook = false
+    @State private var showReferralsTracking = false
+    @State private var showUnassignedRides = false
     @State private var selectedReferral: Referral?
     
     var body: some View {
@@ -54,7 +56,8 @@ struct StaffDashboardView: View {
                             urgentTasksCount: viewModel.urgentTasks.count,
                             needHelpCount: viewModel.needHelpCheckIns.count,
                             unassignedCount: viewModel.unassignedRequests.count,
-                            onShowTasks: { showTasksList = true }
+                            onShowTasks: { showTasksList = true },
+                            onShowUnassignedRides: { showUnassignedRides = true }
                         )
                         
                         // Quick Actions
@@ -62,7 +65,8 @@ struct StaffDashboardView: View {
                             onCreateReferral: { showCreateReferral = true },
                             onShowTasks: { showTasksList = true },
                             onShowResponders: { showResponderList = true },
-                            onShowPlaybook: { showPlaybook = true }
+                            onShowPlaybook: { showPlaybook = true },
+                            onShowReferrals: { showReferralsTracking = true }
                         )
                         
                         // Urgent Tasks Preview
@@ -145,6 +149,12 @@ struct StaffDashboardView: View {
             }
             .sheet(isPresented: $showPlaybook) {
                 PlaybookView()
+            }
+            .sheet(isPresented: $showReferralsTracking) {
+                ReferralsTrackingView()
+            }
+            .sheet(isPresented: $showUnassignedRides) {
+                UnassignedRidesView()
             }
             .sheet(item: $selectedReferral) { referral in
                 ReferralDetailView(referral: referral)
@@ -271,6 +281,7 @@ struct StaffAlertGrid: View {
     let needHelpCount: Int
     let unassignedCount: Int
     var onShowTasks: () -> Void
+    var onShowUnassignedRides: () -> Void
     
     var body: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
@@ -300,7 +311,8 @@ struct StaffAlertGrid: View {
                 title: "Unassigned\nRides",
                 count: unassignedCount,
                 icon: "car.fill",
-                color: .cardBlue
+                color: .cardBlue,
+                onTap: onShowUnassignedRides
             )
         }
     }
@@ -313,6 +325,7 @@ struct StaffQuickActions: View {
     var onShowTasks: () -> Void
     var onShowResponders: () -> Void
     var onShowPlaybook: () -> Void
+    var onShowReferrals: () -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -327,7 +340,7 @@ struct StaffQuickActions: View {
             }
             .padding(.bottom, 4)
             
-            // Action buttons grid
+            // Row 1: Create Referral, Track Referrals
             HStack(spacing: 12) {
                 ActionButton(
                     title: "Create\nReferral",
@@ -337,27 +350,40 @@ struct StaffQuickActions: View {
                 )
                 
                 ActionButton(
-                    title: "View\nTasks",
-                    icon: "checklist",
+                    title: "Track\nReferrals",
+                    icon: "arrow.triangle.2.circlepath.circle.fill",
                     color: .cardMint,
-                    action: onShowTasks
+                    action: onShowReferrals
                 )
             }
             
+            // Row 2: View Tasks, Responder Network
             HStack(spacing: 12) {
+                ActionButton(
+                    title: "View\nTasks",
+                    icon: "checklist",
+                    color: .cardBlue,
+                    action: onShowTasks
+                )
+                
                 ActionButton(
                     title: "Responder\nNetwork",
                     icon: "person.3.fill",
-                    color: .cardBlue,
+                    color: .cardYellow,
                     action: onShowResponders
                 )
-                
+            }
+            
+            // Row 3: Autopilot Playbook
+            HStack(spacing: 12) {
                 ActionButton(
                     title: "Autopilot\nPlaybook",
                     icon: "bolt.circle.fill",
                     color: .stormActive,
                     action: onShowPlaybook
                 )
+                
+                Spacer()
             }
         }
     }

@@ -1062,71 +1062,173 @@ struct OpenRequestCard: View {
     var onAccept: () -> Void
     var onTap: () -> Void
     
+    @ObservedObject var dataService = MockDataService.shared
+    @State private var showMatchDetails = false
+    
     private var isStormMission: Bool {
         request.type == .stormCheckIn
     }
     
+    // Get match score for current volunteer
+    private var matchResult: SmartMatchService.MatchResult {
+        SmartMatchService.shared.findBestMatch(for: request)
+    }
+    
+    private var myMatch: SmartMatchService.ScoredVolunteer? {
+        guard let volunteerId = dataService.currentVolunteer?.id else { return nil }
+        return matchResult.rankedVolunteers.first { $0.volunteer.id == volunteerId }
+    }
+    
+    private var matchScore: Int {
+        myMatch?.score ?? 0
+    }
+    
+    private var matchColor: Color {
+        if matchScore >= 85 { return .statusOk }
+        if matchScore >= 70 { return .cardMint }
+        if matchScore >= 50 { return .statusWarning }
+        return .textLight
+    }
+    
     var body: some View {
         Button(action: onTap) {
-            HStack(spacing: 12) {
-                // Type icon
-                ZStack {
-                    Circle()
-                        .fill(request.type.color.opacity(0.2))
-                        .frame(width: 48, height: 48)
-                    
-                    Image(systemName: request.type.icon)
-                        .font(.title3)
-                        .foregroundColor(request.type.color)
-                }
-                
-                // Info
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack(spacing: 6) {
-                        Text(patientName)
-                            .font(.stormHeadline)
-                            .foregroundColor(.textPrimary)
+            VStack(spacing: 0) {
+                // Main content
+                HStack(spacing: 12) {
+                    // Type icon with match indicator
+                    ZStack {
+                        Circle()
+                            .fill(request.type.color.opacity(0.2))
+                            .frame(width: 48, height: 48)
                         
-                        // Storm badge
-                        if isStormMission {
-                            Text("🌀 STORM")
-                                .font(.system(size: 9, weight: .bold))
+                        Image(systemName: request.type.icon)
+                            .font(.title3)
+                            .foregroundColor(request.type.color)
+                        
+                        // Match score badge (top-right of icon)
+                        if matchScore > 0 {
+                            Text("\(matchScore)")
+                                .font(.system(size: 10, weight: .bold))
                                 .foregroundColor(.white)
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 2)
-                                .background(Color.stormActive)
-                                .cornerRadius(4)
+                                .frame(width: 22, height: 22)
+                                .background(Circle().fill(matchColor))
+                                .offset(x: 16, y: -16)
                         }
                     }
                     
-                    Text(request.dropoffLocation)
-                        .font(.stormCaption)
-                        .foregroundColor(.textSecondary)
-                        .lineLimit(1)
-                    
-                    HStack(spacing: 4) {
-                        Image(systemName: "clock")
-                            .font(.caption2)
-                        Text(request.timeWindowFormatted)
-                            .font(.stormFootnote)
+                    // Info
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack(spacing: 6) {
+                            Text(patientName)
+                                .font(.stormHeadline)
+                                .foregroundColor(.textPrimary)
+                            
+                            // Storm badge
+                            if isStormMission {
+                                Text("🌀 STORM")
+                                    .font(.system(size: 9, weight: .bold))
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 2)
+                                    .background(Color.stormActive)
+                                    .cornerRadius(4)
+                            }
+                            
+                            // High match badge
+                            if matchScore >= 85 {
+                                HStack(spacing: 2) {
+                                    Image(systemName: "star.fill")
+                                        .font(.system(size: 8))
+                                    Text("GREAT MATCH")
+                                        .font(.system(size: 8, weight: .bold))
+                                }
+                                .foregroundColor(.statusOk)
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 2)
+                                .background(Color.statusOk.opacity(0.15))
+                                .cornerRadius(4)
+                            }
+                        }
+                        
+                        Text(request.dropoffLocation)
+                            .font(.stormCaption)
+                            .foregroundColor(.textSecondary)
+                            .lineLimit(1)
+                        
+                        HStack(spacing: 4) {
+                            Image(systemName: "clock")
+                                .font(.caption2)
+                            Text(request.timeWindowFormatted)
+                                .font(.stormFootnote)
+                        }
+                        .foregroundColor(.textLight)
                     }
-                    .foregroundColor(.textLight)
+                    
+                    Spacer()
+                    
+                    // Accept button
+                    Button(action: onAccept) {
+                        Text("Accept")
+                            .font(.stormCaptionBold)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 10)
+                            .background(isStormMission ? Color.stormActive : Color.statusOk)
+                            .cornerRadius(10)
+                    }
+                }
+                .padding(14)
+                
+                // Smart Match breakdown (expandable)
+                if showMatchDetails, let match = myMatch {
+                    SmartMatchBreakdown(breakdown: match.breakdown)
+                        .transition(.opacity.combined(with: .move(edge: .top)))
                 }
                 
-                Spacer()
-                
-                // Accept button
-                Button(action: onAccept) {
-                    Text("Accept")
-                        .font(.stormCaptionBold)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 16)
+                // Match score bar (tap to expand)
+                if matchScore > 0 {
+                    Button(action: { 
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            showMatchDetails.toggle()
+                        }
+                    }) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "target")
+                                .font(.system(size: 11))
+                            
+                            Text("Your Match Score")
+                                .font(.system(size: 11, weight: .medium))
+                            
+                            // Score bar
+                            GeometryReader { geo in
+                                ZStack(alignment: .leading) {
+                                    RoundedRectangle(cornerRadius: 3)
+                                        .fill(Color.gray.opacity(0.2))
+                                        .frame(height: 6)
+                                    
+                                    RoundedRectangle(cornerRadius: 3)
+                                        .fill(matchColor)
+                                        .frame(width: geo.size.width * CGFloat(matchScore) / 100, height: 6)
+                                }
+                            }
+                            .frame(height: 6)
+                            
+                            Text("\(matchScore)%")
+                                .font(.system(size: 12, weight: .bold))
+                                .foregroundColor(matchColor)
+                            
+                            Image(systemName: showMatchDetails ? "chevron.up" : "chevron.down")
+                                .font(.system(size: 10))
+                                .foregroundColor(.textLight)
+                        }
+                        .foregroundColor(.textSecondary)
+                        .padding(.horizontal, 14)
                         .padding(.vertical, 10)
-                        .background(isStormMission ? Color.stormActive : Color.statusOk)
-                        .cornerRadius(10)
+                        .background(Color.white.opacity(0.5))
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
-            .padding(14)
             .background(
                 LinearGradient(
                     colors: isStormMission 
@@ -1139,11 +1241,103 @@ struct OpenRequestCard: View {
             .cornerRadius(16)
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(isStormMission ? Color.stormActive.opacity(0.4) : Color.gray.opacity(0.15), lineWidth: 1)
+                    .stroke(
+                        matchScore >= 85 
+                            ? Color.statusOk.opacity(0.4) 
+                            : (isStormMission ? Color.stormActive.opacity(0.4) : Color.gray.opacity(0.15)), 
+                        lineWidth: matchScore >= 85 ? 2 : 1
+                    )
             )
             .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 3)
         }
         .buttonStyle(PlainButtonStyle())
+    }
+}
+
+// MARK: - Smart Match Breakdown
+
+struct SmartMatchBreakdown: View {
+    let breakdown: SmartMatchService.ScoredVolunteer.ScoreBreakdown
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Divider()
+            
+            HStack(spacing: 16) {
+                // Location
+                MatchFactorPill(
+                    icon: "location.fill",
+                    label: "Location",
+                    score: breakdown.zoneMatchScore,
+                    maxScore: 25,
+                    color: .cardBlue
+                )
+                
+                // Availability
+                MatchFactorPill(
+                    icon: "clock.fill",
+                    label: "Availability",
+                    score: breakdown.availabilityScore,
+                    maxScore: 30,
+                    color: .cardMint
+                )
+                
+                // Reliability
+                MatchFactorPill(
+                    icon: "star.fill",
+                    label: "Reliability",
+                    score: breakdown.reliabilityScore,
+                    maxScore: 15,
+                    color: .cardYellow
+                )
+            }
+            .padding(.horizontal, 14)
+            .padding(.bottom, 12)
+        }
+    }
+}
+
+struct MatchFactorPill: View {
+    let icon: String
+    let label: String
+    let score: Int
+    let maxScore: Int
+    let color: Color
+    
+    private var percentage: Double {
+        guard maxScore > 0 else { return 0 }
+        return Double(score) / Double(maxScore)
+    }
+    
+    var body: some View {
+        VStack(spacing: 4) {
+            HStack(spacing: 4) {
+                Image(systemName: icon)
+                    .font(.system(size: 10))
+                Text("\(score)/\(maxScore)")
+                    .font(.system(size: 10, weight: .semibold))
+            }
+            .foregroundColor(color)
+            
+            Text(label)
+                .font(.system(size: 9))
+                .foregroundColor(.textSecondary)
+            
+            // Mini progress bar
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(color.opacity(0.2))
+                        .frame(height: 4)
+                    
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(color)
+                        .frame(width: geo.size.width * percentage, height: 4)
+                }
+            }
+            .frame(height: 4)
+        }
+        .frame(maxWidth: .infinity)
     }
 }
 

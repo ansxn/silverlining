@@ -332,6 +332,65 @@ class MockDataService: ObservableObject {
         }
     }
     
+    // MARK: - Record Check-In (Patient-initiated)
+    
+    func recordCheckIn(patientId: String, response: CheckInStatus, notes: String?) {
+        // Find existing pending check-in for this patient, or create new one
+        if let index = checkIns.firstIndex(where: { $0.patientId == patientId && $0.status == .pending }) {
+            // Update existing check-in
+            checkIns[index].status = response
+            checkIns[index].receivedAt = Date()
+            checkIns[index].responseMessage = notes
+            
+            let updatedCheckIn = checkIns[index]
+            Task { try? await FirebaseService.shared.saveCheckIn(updatedCheckIn) }
+            
+            // If needs help, create urgent task
+            if response == .needHelp {
+                createHelpTask(patientId: patientId, notes: notes)
+            }
+        } else {
+            // Create new check-in record
+            let newCheckIn = CheckIn(
+                id: UUID().uuidString,
+                patientId: patientId,
+                stormSessionId: "storm_\(Date().timeIntervalSince1970)",
+                status: response,
+                channel: .app,
+                receivedAt: Date(),
+                sentAt: Date(),
+                responseMessage: notes
+            )
+            checkIns.append(newCheckIn)
+            
+            Task { try? await FirebaseService.shared.saveCheckIn(newCheckIn) }
+            
+            if response == .needHelp {
+                createHelpTask(patientId: patientId, notes: notes)
+            }
+        }
+    }
+    
+    private func createHelpTask(patientId: String, notes: String?) {
+        let urgentTask = StormTask(
+            id: UUID().uuidString,
+            type: .callPatient,
+            patientId: patientId,
+            linkedReferralId: nil,
+            linkedRequestId: nil,
+            status: .open,
+            priority: .high,
+            assignedTo: currentUser.id,
+            createdAt: Date(),
+            dueAt: Date().addingTimeInterval(900), // 15 minutes
+            completedAt: nil,
+            notes: "URGENT: Storm check-in - patient needs help. \(notes ?? "")"
+        )
+        tasks.append(urgentTask)
+        
+        Task { try? await FirebaseService.shared.saveTask(urgentTask) }
+    }
+    
     // MARK: - Referral Actions
     
     func createReferral(_ referral: Referral) {
