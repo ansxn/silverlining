@@ -46,6 +46,10 @@
 		3ED5038F2F2F49650047CB12 /* AIStormService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED5038E2F2F49650047CB12 /* AIStormService.swift */; };
 		3ED503902F2F31100047CB12 /* PlaybookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED503912F2F31100047CB12 /* PlaybookView.swift */; };
 		3ED503912F2F52C30047CB12 /* LandingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED503902F2F52C30047CB12 /* LandingPageView.swift */; };
+		3ED503942F2F5E910047CB12 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3ED503932F2F5E910047CB12 /* FirebaseCore */; };
+		3ED503962F2F5E910047CB12 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3ED503952F2F5E910047CB12 /* FirebaseFirestore */; };
+		3ED503982F2F5FAE0047CB12 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED503972F2F5FAD0047CB12 /* FirebaseService.swift */; };
+		3ED5039A2F2F60B30047CB12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3ED503992F2F60B30047CB12 /* GoogleService-Info.plist */; };
 		58B741999AA5D56B059BAB51 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8B4EC69E7935D93D7F5663 /* WeatherService.swift */; };
 		62D94A7282260FDCB977F283 /* AIStormService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51534EB5A986A04D09562C19 /* AIStormService.swift */; };
 		99924FE1A928A64FCCCCB0F5 /* WeatherBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1E47B1A48D331D9E60E5B2 /* WeatherBackgroundView.swift */; };
@@ -93,6 +97,8 @@
 		3ED5038F2F2F31000047CB12 /* AutopilotService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutopilotService.swift; sourceTree = "<group>"; };
 		3ED503902F2F52C30047CB12 /* LandingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageView.swift; sourceTree = "<group>"; };
 		3ED503912F2F31100047CB12 /* PlaybookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybookView.swift; sourceTree = "<group>"; };
+		3ED503972F2F5FAD0047CB12 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
+		3ED503992F2F60B30047CB12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		51534EB5A986A04D09562C19 /* AIStormService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AIStormService.swift; path = StormMode/Services/AIStormService.swift; sourceTree = SOURCE_ROOT; };
 		6E8B4EC69E7935D93D7F5663 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WeatherService.swift; path = StormMode/Services/WeatherService.swift; sourceTree = SOURCE_ROOT; };
 		B6B248E1963F72D641CCBE84 /* StormThreatCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StormThreatCard.swift; path = StormMode/Views/Components/StormThreatCard.swift; sourceTree = SOURCE_ROOT; };
@@ -104,6 +110,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3ED503942F2F5E910047CB12 /* FirebaseCore in Frameworks */,
+				3ED503962F2F5E910047CB12 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +133,7 @@
 		00000301 /* StormMode */ = {
 			isa = PBXGroup;
 			children = (
+				3ED503992F2F60B30047CB12 /* GoogleService-Info.plist */,
 				00000002 /* StormModeApp.swift */,
 				00000004 /* ContentView.swift */,
 				00000303 /* Models */,
@@ -161,6 +170,7 @@
 		00000304 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				3ED503972F2F5FAD0047CB12 /* FirebaseService.swift */,
 				3ED5038E2F2F49650047CB12 /* AIStormService.swift */,
 				3ED5038C2F2F495C0047CB12 /* TwilioService.swift */,
 				3ED5038F2F2F31000047CB12 /* AutopilotService.swift */,
@@ -292,6 +302,9 @@
 				Base,
 			);
 			mainGroup = 00000300;
+			packageReferences = (
+				3ED503922F2F5E910047CB12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 00000302 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -307,6 +320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00000005 /* Assets.xcassets in Resources */,
+				3ED5039A2F2F60B30047CB12 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +335,7 @@
 				3ED503892F2F253D0047CB12 /* OpenAIService.swift in Sources */,
 				00000003 /* ContentView.swift in Sources */,
 				00000007 /* Colors.swift in Sources */,
+				3ED503982F2F5FAE0047CB12 /* FirebaseService.swift in Sources */,
 				00000009 /* Typography.swift in Sources */,
 				0000000B /* Styles.swift in Sources */,
 				0000000D /* User.swift in Sources */,
@@ -566,6 +581,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3ED503922F2F5E910047CB12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.8.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3ED503932F2F5E910047CB12 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3ED503922F2F5E910047CB12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		3ED503952F2F5E910047CB12 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3ED503922F2F5E910047CB12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 00000600 /* Project object */;
 }

@@ -227,6 +227,9 @@ struct RoleOptionButton: View {
 struct DemoActionsView: View {
     var onSeedData: () -> Void
     @ObservedObject var dataService = MockDataService.shared
+    @ObservedObject var firebaseService = FirebaseService.shared
+    @State private var isSyncing = false
+    @State private var showSynced = false
     
     var body: some View {
         VStack(spacing: 20) {
@@ -236,6 +239,7 @@ struct DemoActionsView: View {
                 .padding(.top, 20)
             
             VStack(spacing: 12) {
+                // Reset demo data
                 Button(action: onSeedData) {
                     HStack {
                         Image(systemName: "arrow.clockwise")
@@ -243,6 +247,53 @@ struct DemoActionsView: View {
                     }
                 }
                 .buttonStyle(SecondaryButtonStyle())
+                
+                // Firebase Sync button
+                Button(action: syncToFirebase) {
+                    HStack {
+                        if isSyncing {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .scaleEffect(0.8)
+                        } else if showSynced {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.statusOk)
+                        } else {
+                            Image(systemName: "cloud.fill")
+                        }
+                        Text(showSynced ? "Synced to Cloud!" : "Sync to Firebase")
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(showSynced ? Color.statusOk.opacity(0.2) : Color.cardMint.opacity(0.2))
+                    )
+                    .foregroundColor(showSynced ? .statusOk : .cardMint)
+                    .font(.stormBodyBold)
+                }
+                .disabled(isSyncing)
+                
+                // Connection status
+                HStack {
+                    Circle()
+                        .fill(firebaseService.isConnected ? Color.statusOk : Color.stormActive)
+                        .frame(width: 8, height: 8)
+                    
+                    Text(firebaseService.isConnected ? "Firebase Connected" : "Connecting...")
+                        .font(.stormCaption)
+                        .foregroundColor(.textSecondary)
+                    
+                    Spacer()
+                    
+                    if let syncTime = firebaseService.lastSyncTime {
+                        Text("Last sync: \(syncTime.formatted(date: .omitted, time: .shortened))")
+                            .font(.system(size: 10))
+                            .foregroundColor(.textLight)
+                    }
+                }
+                .padding(.horizontal, 4)
+                .padding(.top, 8)
                 
                 HStack {
                     Text("Storm Mode:")
@@ -262,6 +313,31 @@ struct DemoActionsView: View {
             Spacer()
         }
         .background(Color.stormBackground)
+    }
+    
+    private func syncToFirebase() {
+        isSyncing = true
+        showSynced = false
+        
+        Task {
+            await firebaseService.syncDemoDataToFirebase(
+                users: dataService.users,
+                referrals: dataService.referrals,
+                requests: dataService.requests,
+                checkIns: dataService.checkIns,
+                tasks: dataService.tasks
+            )
+            
+            await MainActor.run {
+                isSyncing = false
+                showSynced = true
+                
+                // Reset after 3 seconds
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    showSynced = false
+                }
+            }
+        }
     }
 }
 

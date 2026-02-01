@@ -303,6 +303,10 @@ class MockDataService: ObservableObject {
             checkIns[index].status = status
             checkIns[index].receivedAt = Date()
             
+            // Sync check-in to Firebase
+            let updatedCheckIn = checkIns[index]
+            Task { try? await FirebaseService.shared.saveCheckIn(updatedCheckIn) }
+            
             // If needs help, create urgent call task
             if status == .needHelp {
                 let checkIn = checkIns[index]
@@ -321,6 +325,9 @@ class MockDataService: ObservableObject {
                     notes: "URGENT: Storm check-in - patient needs help"
                 )
                 tasks.append(urgentTask)
+                
+                // Sync urgent task to Firebase
+                Task { try? await FirebaseService.shared.saveTask(urgentTask) }
             }
         }
     }
@@ -331,12 +338,19 @@ class MockDataService: ObservableObject {
         var newReferral = referral
         newReferral.lastStatusUpdateAt = Date()
         referrals.append(newReferral)
+        
+        // Sync to Firebase
+        Task { try? await FirebaseService.shared.saveReferral(newReferral) }
     }
     
     func updateReferralStatus(id: String, status: ReferralStatus) {
         if let index = referrals.firstIndex(where: { $0.id == id }) {
             referrals[index].status = status
             referrals[index].lastStatusUpdateAt = Date()
+            
+            // Sync to Firebase
+            let updatedReferral = referrals[index]
+            Task { try? await FirebaseService.shared.saveReferral(updatedReferral) }
             
             // If missed, create reschedule task
             if status == .missed {
@@ -355,6 +369,9 @@ class MockDataService: ObservableObject {
                     notes: "Patient missed appointment"
                 )
                 tasks.append(task)
+                
+                // Sync new task to Firebase
+                Task { try? await FirebaseService.shared.saveTask(task) }
             }
         }
     }
@@ -363,6 +380,9 @@ class MockDataService: ObservableObject {
     
     func createRequest(_ request: TransportRequest) {
         requests.append(request)
+        
+        // Sync to Firebase
+        Task { try? await FirebaseService.shared.saveTransportRequest(request) }
     }
     
     func assignRequest(id: String, volunteerId: String) {
@@ -375,6 +395,10 @@ class MockDataService: ObservableObject {
     func completeRequest(id: String) {
         if let index = requests.firstIndex(where: { $0.id == id }) {
             requests[index].status = .completed
+            
+            // Sync to Firebase
+            let updatedRequest = requests[index]
+            Task { try? await FirebaseService.shared.saveTransportRequest(updatedRequest) }
         }
     }
     
@@ -393,6 +417,10 @@ class MockDataService: ObservableObject {
         if let index = tasks.firstIndex(where: { $0.id == id }) {
             tasks[index].status = .done
             tasks[index].completedAt = Date()
+            
+            // Sync to Firebase
+            let updatedTask = tasks[index]
+            Task { try? await FirebaseService.shared.saveTask(updatedTask) }
         }
     }
     
