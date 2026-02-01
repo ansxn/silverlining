@@ -10,6 +10,7 @@ class MockDataService: ObservableObject {
     // MARK: - Published Data
     @Published var currentUser: User
     @Published var users: [User]
+    @Published var volunteers: [Volunteer]
     @Published var referrals: [Referral]
     @Published var requests: [TransportRequest]
     @Published var tasks: [StormTask]
@@ -19,9 +20,15 @@ class MockDataService: ObservableObject {
     // Demo mode for role switching
     @Published var demoRole: UserRole = .clinicStaff
     
+    // Track patient → preferred driver relationships
+    @Published var patientPreferredDrivers: [String: String] = [
+        "patient-001": "vol-001"  // Mary Thompson prefers John Wilson
+    ]
+    
     private init() {
         // Initialize with sample data
         self.users = Self.generateUsers()
+        self.volunteers = Volunteer.sampleVolunteers
         self.referrals = Self.generateReferrals()
         self.requests = Self.generateRequests()
         self.tasks = Self.generateTasks()
@@ -46,8 +53,37 @@ class MockDataService: ObservableObject {
         stormState.activatedAt = Date()
         stormState.activatedBy = currentUser.id
         
+        let autopilot = AutopilotService.shared
+        
+        // Log Storm Mode activation
+        autopilot.logAction(
+            .stormModeActivated,
+            description: "Storm Mode activated - Winter Storm Warning in effect",
+            priority: .warning
+        )
+        
         // Generate check-in tasks for vulnerable patients
         let vulnerablePatients = users.filter { $0.isVulnerable && $0.role == .patient }
+        
+        // Log bulk check-in creation
+        if !vulnerablePatients.isEmpty {
+            autopilot.logAction(
+                .checkInCreated,
+                description: "Auto-created Storm Check-Ins for \(vulnerablePatients.count) high-risk patients",
+                priority: .info
+            )
+        }
+        
+        // 📱 SEND REAL SMS via Twilio to patients who prefer SMS
+        let smsPatients = vulnerablePatients.filter { 
+            $0.contactPreference == .sms || $0.contactPreference == .both 
+        }
+        
+        if !smsPatients.isEmpty {
+            Task {
+                await sendStormCheckInSMS(to: smsPatients)
+            }
+        }
         
         for patient in vulnerablePatients {
             // Create storm check-in task
@@ -79,10 +115,46 @@ class MockDataService: ObservableObject {
                 responseMessage: nil
             )
             checkIns.append(checkIn)
+            
+            // Create essential supply delivery request for vulnerable patients
+            // (every other vulnerable patient gets a supply delivery for demo)
+            if vulnerablePatients.firstIndex(where: { $0.id == patient.id })?.isMultiple(of: 2) == true {
+                let supplyRequest = TransportRequest(
+                    id: UUID().uuidString,
+                    type: .essentialSupplyDropoff,
+                    patientId: patient.id,
+                    createdBy: "AUTOPILOT",
+                    pickupLocation: "Community Resource Center",
+                    dropoffLocation: patient.address ?? "Patient Address",
+                    pickupZone: "Downtown",
+                    dropoffZone: TransportRequest.inferZone(from: patient.address ?? "Downtown"),
+                    timeWindowStart: Date().addingTimeInterval(3600),
+                    timeWindowEnd: Date().addingTimeInterval(14400),
+                    mobilityNeeds: nil,
+                    status: .open,
+                    assignedVolunteerId: nil,
+                    linkedReferralId: nil,
+                    createdAt: Date(),
+                    notes: "Auto-created: Storm supply delivery for \(patient.firstName)",
+                    visibility: .publicVolunteers,
+                    needsClinicFollowUp: false,
+                    failReason: nil,
+                    completedAt: nil
+                )
+                requests.append(supplyRequest)
+                
+                autopilot.logAction(
+                    .missionCreated,
+                    description: "Auto-created supply delivery for \(patient.fullName)",
+                    missionId: supplyRequest.id,
+                    priority: .info
+                )
+            }
         }
         
         // Flag upcoming appointments as storm_at_risk
         let lookaheadDate = Calendar.current.date(byAdding: .day, value: stormState.rules.daysLookahead, to: Date()) ?? Date()
+        var rescheduledCount = 0
         
         for i in 0..<referrals.count {
             if let appointmentDate = referrals[i].appointmentDateTime,
@@ -90,6 +162,7 @@ class MockDataService: ObservableObject {
                appointmentDate > Date(),
                referrals[i].stormSensitive {
                 referrals[i].status = .stormAtRisk
+                rescheduledCount += 1
                 
                 // Create reschedule task
                 let rescheduleTask = StormTask(
@@ -109,11 +182,118 @@ class MockDataService: ObservableObject {
                 tasks.append(rescheduleTask)
             }
         }
+        
+        if rescheduledCount > 0 {
+            autopilot.logAction(
+                .rescheduleMission,
+                description: "Flagged \(rescheduledCount) storm-sensitive appointments for reschedule",
+                priority: .warning
+            )
+        }
+        
+        // Create volunteer missions for storm check-ins
+        MockMissionService.shared.createStormCheckInMissions()
+        
+        // AUTO-ASSIGN: Try to assign all open requests to best volunteers
+        autoAssignOpenStormMissions()
+    }
+    
+    // MARK: - Storm Auto-Assignment
+    
+    private func autoAssignOpenStormMissions() {
+        let smartMatch = SmartMatchService.shared
+        let autopilot = AutopilotService.shared
+        
+        // Lower threshold during storm mode - be more aggressive with matching
+        let openRequests = requests.filter { $0.status == .open }
+        var assignedCount = 0
+        
+        for request in openRequests {
+            let result = smartMatch.findBestMatch(for: request)
+            
+            // During storm mode, lower threshold to 60% (vs 85% normally)
+            if let volunteer = result.bestMatch, result.matchScore >= 60 {
+                if let _ = smartMatch.autoAssign(request: request) {
+                    assignedCount += 1
+                    autopilot.logAction(
+                        .missionAssigned,
+                        description: "Storm auto-assigned: \(request.type.shortName) to \(volunteer.fullName) (\(result.matchScore)%)",
+                        missionId: request.id,
+                        volunteerId: volunteer.id,
+                        priority: .success
+                    )
+                }
+            }
+        }
+        
+        if assignedCount > 0 {
+            autopilot.logAction(
+                .missionAssigned,
+                description: "Storm Mode: Auto-assigned \(assignedCount) missions to available volunteers",
+                priority: .success
+            )
+        }
     }
     
     func deactivateStormMode() {
         stormState.isStormMode = false
         stormState.deactivatedAt = Date()
+        
+        AutopilotService.shared.logAction(
+            .stormModeDeactivated,
+            description: "Storm Mode deactivated - returning to normal operations",
+            priority: .info
+        )
+    }
+    
+    // MARK: - Send SMS Check-Ins via Twilio
+    
+    @MainActor
+    private func sendStormCheckInSMS(to patients: [User]) async {
+        let autopilot = AutopilotService.shared
+        
+        // Log that SMS blast is starting
+        autopilot.logAction(
+            .smsBroadcast,
+            description: "📱 Sending SMS check-ins to \(patients.count) patients...",
+            priority: .info
+        )
+        
+        var sentCount = 0
+        var failedCount = 0
+        
+        for patient in patients {
+            let result = await TwilioService.shared.sendStormCheckIn(
+                patientName: patient.firstName,
+                patientPhone: patient.phone
+            )
+            
+            if result.success {
+                sentCount += 1
+                print("✅ SMS sent to \(patient.fullName)")
+            } else {
+                failedCount += 1
+                print("❌ SMS failed for \(patient.fullName): \(result.error ?? "Unknown")")
+            }
+            
+            // Small delay between sends
+            try? await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds
+        }
+        
+        // Log completion
+        if sentCount > 0 {
+            autopilot.logAction(
+                .smsBroadcast,
+                description: "✅ SMS Check-Ins: \(sentCount) sent successfully" + (failedCount > 0 ? ", \(failedCount) failed" : ""),
+                priority: .success
+            )
+        } else if failedCount > 0 {
+            autopilot.logAction(
+                .smsBroadcast,
+                description: "❌ SMS Check-Ins failed: Check Twilio configuration",
+                priority: .critical
+            )
+        }
     }
     
     // MARK: - Simulate Check-In Response
@@ -202,8 +382,10 @@ class MockDataService: ObservableObject {
         if let index = requests.firstIndex(where: { $0.id == id }) {
             requests[index].status = .open
             requests[index].assignedVolunteerId = nil
+            requests[index].visibility = .publicVolunteers // Reset visibility so it reappears
         }
     }
+    
     
     // MARK: - Task Actions
     
@@ -212,6 +394,95 @@ class MockDataService: ObservableObject {
             tasks[index].status = .done
             tasks[index].completedAt = Date()
         }
+    }
+    
+    // MARK: - Volunteer Management
+    
+    var currentVolunteer: Volunteer? {
+        volunteers.first { $0.userId == currentUser.id }
+    }
+    
+    func getVolunteer(id: String) -> Volunteer? {
+        volunteers.first { $0.id == id || $0.userId == id }
+    }
+    
+    func toggleVolunteerAvailability(volunteerId: String) {
+        guard let index = volunteers.firstIndex(where: { $0.id == volunteerId || $0.userId == volunteerId }) else { return }
+        
+        // Don't toggle if on a mission
+        if volunteers[index].availability == .onMission { return }
+        
+        volunteers[index].availability = volunteers[index].availability == .available ? .unavailable : .available
+    }
+    
+    func setVolunteerOnMission(volunteerId: String, onMission: Bool) {
+        guard let index = volunteers.firstIndex(where: { $0.id == volunteerId || $0.userId == volunteerId }) else { return }
+        
+        if onMission {
+            volunteers[index].availability = .onMission
+        } else {
+            volunteers[index].availability = .available
+        }
+    }
+    
+    // Smart match volunteers for a mission - sorted by availability, then reliability, then zone match
+    func smartMatchedVolunteers(for request: TransportRequest? = nil, zone: String? = nil) -> [Volunteer] {
+        var matched = volunteers
+        
+        // Filter by tier if mission requires trusted responder
+        if let request = request {
+            matched = matched.filter { $0.canAccept(missionType: request.type) }
+        }
+        
+        // Sort by: availability (available first) → reliability → zone match
+        return matched.sorted { v1, v2 in
+            // 1. Available volunteers first
+            if v1.availability == .available && v2.availability != .available { return true }
+            if v2.availability == .available && v1.availability != .available { return false }
+            
+            // 2. On mission comes before unavailable
+            if v1.availability == .onMission && v2.availability == .unavailable { return true }
+            if v2.availability == .onMission && v1.availability == .unavailable { return false }
+            
+            // 3. Higher reliability first
+            if v1.reliabilityScore != v2.reliabilityScore {
+                return v1.reliabilityScore > v2.reliabilityScore
+            }
+            
+            // 4. Zone match (if provided)
+            if let targetZone = zone {
+                if v1.zone == targetZone && v2.zone != targetZone { return true }
+                if v2.zone == targetZone && v1.zone != targetZone { return false }
+            }
+            
+            return v1.completedMissions > v2.completedMissions
+        }
+    }
+    
+    // Get available volunteers only
+    var availableVolunteers: [Volunteer] {
+        volunteers.filter { $0.availability == .available }
+    }
+    
+    // MARK: - Patient-Driver Preferences
+    
+    func setPreferredDriver(patientId: String, driverId: String) {
+        patientPreferredDrivers[patientId] = driverId
+    }
+    
+    func getPreferredDriver(forPatient patientId: String) -> Volunteer? {
+        guard let driverId = patientPreferredDrivers[patientId] else { return nil }
+        return getVolunteer(id: driverId)
+    }
+    
+    func patientsWhoPrefer(driverId: String) -> [User] {
+        let patientIds = patientPreferredDrivers.filter { $0.value == driverId }.keys
+        return users.filter { patientIds.contains($0.id) && $0.role == .patient }
+    }
+    
+    var patientsPreferringCurrentVolunteer: [User] {
+        guard let volunteer = currentVolunteer else { return [] }
+        return patientsWhoPrefer(driverId: volunteer.id)
     }
     
     // MARK: - Seed Demo Data
@@ -283,7 +554,7 @@ extension MockDataService {
                 id: "patient-001",
                 role: .patient,
                 fullName: "Mary Thompson",
-                phone: "+1867555001",
+                phone: "+14168305958",  // Demo: YOUR phone number for testing
                 email: "mary@example.com",
                 createdAt: Date().addingTimeInterval(-86400 * 120),
                 isVulnerable: true,
@@ -515,6 +786,8 @@ extension MockDataService {
                 createdBy: "staff-001",
                 pickupLocation: "123 Pine Street",
                 dropoffLocation: "Regional Hospital, 110km",
+                pickupZone: "Downtown",
+                dropoffZone: "East End",
                 timeWindowStart: now.addingTimeInterval(86400 * 3 + 28800), // 8am in 3 days
                 timeWindowEnd: now.addingTimeInterval(86400 * 3 + 36000), // 10am
                 mobilityNeeds: "Walker assistance needed",
@@ -551,6 +824,8 @@ extension MockDataService {
                 createdBy: "staff-001",
                 pickupLocation: "12 Maple Court",
                 dropoffLocation: "Regional Hospital, 110km",
+                pickupZone: "North Side",
+                dropoffZone: "Downtown",
                 timeWindowStart: now.addingTimeInterval(86400 * 5 + 25200), // 7am in 5 days
                 timeWindowEnd: now.addingTimeInterval(86400 * 5 + 32400), // 9am
                 mobilityNeeds: "Wheelchair",

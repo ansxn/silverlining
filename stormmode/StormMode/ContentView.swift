@@ -9,47 +9,55 @@ struct ContentView: View {
     @State private var showDemoActions = false
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            // Main Content based on role
-            Group {
-                switch authViewModel.currentRole {
-                case .patient:
-                    PatientHomeView()
-                case .volunteer:
-                    VolunteerHomeView()
-                case .clinicStaff:
-                    StaffDashboardView()
-                case .admin:
-                    StaffDashboardView() // Admin uses same view for MVP
+        Group {
+            if !authViewModel.isOnboarded {
+                // Show landing page first
+                LandingPageView()
+            } else {
+                // Main app content
+                ZStack(alignment: .bottom) {
+                    // Main Content based on role
+                    Group {
+                        switch authViewModel.currentRole {
+                        case .patient:
+                            PatientHomeView()
+                        case .volunteer:
+                            VolunteerHomeView()
+                        case .clinicStaff:
+                            StaffDashboardView()
+                        case .admin:
+                            StaffDashboardView() // Admin uses same view for MVP
+                        }
+                    }
+                    
+                    // Bottom Navigation Bar
+                    BottomNavBar(
+                        currentRole: authViewModel.currentRole,
+                        isStormMode: dataService.stormState.isStormMode,
+                        onRoleTap: { showRoleSwitcher = true },
+                        onDemoTap: { showDemoActions = true }
+                    )
+                }
+                .sheet(isPresented: $showRoleSwitcher) {
+                    RoleSwitcherView(
+                        currentRole: authViewModel.currentRole,
+                        onSelect: { role in
+                            authViewModel.switchRole(to: role)
+                            showRoleSwitcher = false
+                        }
+                    )
+                    .presentationDetents([.medium])
+                }
+                .sheet(isPresented: $showDemoActions) {
+                    DemoActionsView(
+                        onSeedData: {
+                            authViewModel.seedDemoData()
+                            showDemoActions = false
+                        }
+                    )
+                    .presentationDetents([.height(300)])
                 }
             }
-            
-            // Bottom Navigation Bar
-            BottomNavBar(
-                currentRole: authViewModel.currentRole,
-                isStormMode: dataService.stormState.isStormMode,
-                onRoleTap: { showRoleSwitcher = true },
-                onDemoTap: { showDemoActions = true }
-            )
-        }
-        .sheet(isPresented: $showRoleSwitcher) {
-            RoleSwitcherView(
-                currentRole: authViewModel.currentRole,
-                onSelect: { role in
-                    authViewModel.switchRole(to: role)
-                    showRoleSwitcher = false
-                }
-            )
-            .presentationDetents([.medium])
-        }
-        .sheet(isPresented: $showDemoActions) {
-            DemoActionsView(
-                onSeedData: {
-                    authViewModel.seedDemoData()
-                    showDemoActions = false
-                }
-            )
-            .presentationDetents([.height(300)])
         }
     }
 }

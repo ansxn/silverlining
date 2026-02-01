@@ -25,6 +25,9 @@ struct VolunteerHomeView: View {
                             StormBanner(isActive: true)
                         }
                         
+                        // Availability Status Toggle (Uber-style)
+                        AvailabilityToggleCard()
+                        
                         // Greeting Card
                         VolunteerGreetingCard(name: viewModel.volunteerName)
                         
@@ -33,6 +36,12 @@ struct VolunteerHomeView: View {
                             completedCount: viewModel.completedCount,
                             assignedCount: viewModel.assignedCount
                         )
+                        
+                        // Community Impact Widget (Mission stats)
+                        CommunityImpactWidget()
+                        
+                        // Patients who prefer this driver
+                        MyPatientsCard()
                         
                         // Urgent Requests Alert
                         if viewModel.isStormMode && viewModel.openRequestsCount > 0 {
@@ -56,7 +65,8 @@ struct VolunteerHomeView: View {
                                         patientName: viewModel.patientName(for: request.patientId),
                                         onStart: { viewModel.startTrip(request.id) },
                                         onComplete: { viewModel.completeTrip(request.id) },
-                                        onCancel: { viewModel.cancelAssignment(request.id) }
+                                        onCancel: { viewModel.cancelAssignment(request.id) },
+                                        onFail: { reason in viewModel.failMission(request.id, reason: reason) }
                                     )
                                 }
                             }
@@ -148,6 +158,274 @@ struct VolunteerHomeView: View {
     }
 }
 
+// MARK: - Availability Toggle Card
+
+struct AvailabilityToggleCard: View {
+    @ObservedObject var dataService = MockDataService.shared
+    
+    private var volunteer: Volunteer? {
+        dataService.currentVolunteer
+    }
+    
+    private var availability: VolunteerAvailability {
+        volunteer?.availability ?? .unavailable
+    }
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            // Header row
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Responder Status")
+                        .font(.stormCaption)
+                        .foregroundColor(.textSecondary)
+                    
+                    HStack(spacing: 8) {
+                        // Status indicator
+                        Circle()
+                            .fill(availability.color)
+                            .frame(width: 12, height: 12)
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.white, lineWidth: 2)
+                            )
+                            .shadow(color: availability.color.opacity(0.5), radius: 4)
+                        
+                        Text(availability.displayName)
+                            .font(.stormHeadline)
+                            .foregroundColor(.textPrimary)
+                    }
+                }
+                
+                Spacer()
+                
+                // Tier badge
+                if let vol = volunteer {
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text(vol.tier.badge)
+                            .font(.title2)
+                        Text(vol.tier.displayName)
+                            .font(.system(size: 9, weight: .semibold))
+                            .foregroundColor(vol.tier.color)
+                    }
+                }
+            }
+            
+            // Toggle buttons
+            if availability != .onMission {
+                HStack(spacing: 12) {
+                    AvailabilityButton(
+                        title: "Available",
+                        icon: "checkmark.circle.fill",
+                        isSelected: availability == .available,
+                        color: .statusOk
+                    ) {
+                        if availability != .available {
+                            withAnimation(.spring(response: 0.3)) {
+                                dataService.toggleVolunteerAvailability(volunteerId: volunteer?.id ?? "")
+                            }
+                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                        }
+                    }
+                    
+                    AvailabilityButton(
+                        title: "Unavailable",
+                        icon: "moon.fill",
+                        isSelected: availability == .unavailable,
+                        color: .textLight
+                    ) {
+                        if availability != .unavailable {
+                            withAnimation(.spring(response: 0.3)) {
+                                dataService.toggleVolunteerAvailability(volunteerId: volunteer?.id ?? "")
+                            }
+                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                        }
+                    }
+                }
+            } else {
+                // On mission - show status
+                HStack(spacing: 8) {
+                    Image(systemName: "car.fill")
+                        .foregroundColor(.stormActive)
+                    Text("Currently on a mission")
+                        .font(.stormCaptionBold)
+                        .foregroundColor(.stormActive)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(Color.stormActive.opacity(0.1))
+                .cornerRadius(12)
+            }
+            
+            // Zone & reliability display
+            if let vol = volunteer {
+                HStack(spacing: 16) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "mappin.circle.fill")
+                            .foregroundColor(.cardBlue)
+                        Text(vol.zone)
+                            .font(.stormCaption)
+                            .foregroundColor(.textSecondary)
+                    }
+                    
+                    Divider()
+                        .frame(height: 16)
+                    
+                    HStack(spacing: 6) {
+                        Image(systemName: "star.fill")
+                            .foregroundColor(.cardYellow)
+                        Text("\(vol.reliabilityPercent)% reliable")
+                            .font(.stormCaption)
+                            .foregroundColor(.textSecondary)
+                    }
+                    
+                    Divider()
+                        .frame(height: 16)
+                    
+                    HStack(spacing: 6) {
+                        Image(systemName: "checkmark.seal.fill")
+                            .foregroundColor(.statusOk)
+                        Text("\(vol.completedMissions) completed")
+                            .font(.stormCaption)
+                            .foregroundColor(.textSecondary)
+                    }
+                }
+            }
+        }
+        .padding(20)
+        .background(
+            LinearGradient(
+                colors: [
+                    availability == .available ? Color(hex: "F0FFF4") : Color(hex: "F8F9FA"),
+                    availability == .available ? Color(hex: "E6F9EC") : Color(hex: "F1F3F4")
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .cornerRadius(24)
+        .overlay(
+            RoundedRectangle(cornerRadius: 24)
+                .stroke(availability.color.opacity(0.3), lineWidth: 1.5)
+        )
+        .shadow(color: availability.color.opacity(0.1), radius: 10, x: 0, y: 4)
+    }
+}
+
+struct AvailabilityButton: View {
+    let title: String
+    let icon: String
+    let isSelected: Bool
+    let color: Color
+    var action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                Image(systemName: icon)
+                    .font(.subheadline)
+                Text(title)
+                    .font(.stormCaptionBold)
+            }
+            .foregroundColor(isSelected ? .white : color)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+            .background(isSelected ? color : color.opacity(0.1))
+            .cornerRadius(12)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+// MARK: - My Patients Card (Preferred Driver)
+
+struct MyPatientsCard: View {
+    @ObservedObject var dataService = MockDataService.shared
+    
+    private var myPatients: [User] {
+        dataService.patientsPreferringCurrentVolunteer
+    }
+    
+    var body: some View {
+        // Only show if there's at least one patient who prefers this driver
+        if !myPatients.isEmpty {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Image(systemName: "heart.fill")
+                        .foregroundColor(.cardCoral)
+                    Text("Patients Who Prefer You")
+                        .font(.stormCaptionBold)
+                        .foregroundColor(.textPrimary)
+                    Spacer()
+                    Text("\(myPatients.count)")
+                        .font(.stormHeadline)
+                        .foregroundColor(.cardCoral)
+                }
+                
+                ForEach(myPatients) { patient in
+                    HStack(spacing: 12) {
+                        // Avatar
+                        Circle()
+                            .fill(Color.cardCoral.opacity(0.15))
+                            .frame(width: 40, height: 40)
+                            .overlay(
+                                Text(patient.initials)
+                                    .font(.stormCaptionBold)
+                                    .foregroundColor(.cardCoral)
+                            )
+                        
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(patient.fullName)
+                                .font(.stormCaptionBold)
+                                .foregroundColor(.textPrimary)
+                            
+                            if let address = patient.address {
+                                Text(address)
+                                    .font(.stormFootnote)
+                                    .foregroundColor(.textSecondary)
+                                    .lineLimit(1)
+                            }
+                        }
+                        
+                        Spacer()
+                        
+                        // Contact button
+                        Button(action: {}) {
+                            Image(systemName: "phone.fill")
+                                .font(.caption)
+                                .foregroundColor(.white)
+                                .frame(width: 32, height: 32)
+                                .background(Color.cardCoral)
+                                .clipShape(Circle())
+                        }
+                    }
+                    .padding(10)
+                    .background(Color.white.opacity(0.6))
+                    .cornerRadius(12)
+                }
+                
+                Text("These patients will see you as their preferred driver")
+                    .font(.stormFootnote)
+                    .foregroundColor(.textLight)
+            }
+            .padding(16)
+            .background(
+                LinearGradient(
+                    colors: [Color(hex: "FFF5F5"), Color(hex: "FFEFEF")],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .cornerRadius(20)
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(Color.cardCoral.opacity(0.2), lineWidth: 1)
+            )
+            .shadow(color: Color.cardCoral.opacity(0.1), radius: 8, x: 0, y: 3)
+        }
+    }
+}
+
 // MARK: - Volunteer Greeting Card
 
 struct VolunteerGreetingCard: View {
@@ -197,9 +475,19 @@ struct VolunteerGreetingCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(20)
-        .background(Color.white)
+        .background(
+            LinearGradient(
+                colors: [Color(hex: "F8F6FF"), Color(hex: "F0EDFF")],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
         .cornerRadius(24)
-        .cardShadow()
+        .overlay(
+            RoundedRectangle(cornerRadius: 24)
+                .stroke(Color.cardLavender.opacity(0.3), lineWidth: 1)
+        )
+        .shadow(color: Color.cardLavender.opacity(0.15), radius: 12, x: 0, y: 4)
     }
 }
 
@@ -278,9 +566,19 @@ struct VolunteerImpactCard: View {
             }
         }
         .padding(20)
-        .background(Color.white)
+        .background(
+            LinearGradient(
+                colors: [Color(hex: "F0F9F7"), Color(hex: "E8F5F1")],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
         .cornerRadius(24)
-        .cardShadow()
+        .overlay(
+            RoundedRectangle(cornerRadius: 24)
+                .stroke(Color.cardMint.opacity(0.3), lineWidth: 1)
+        )
+        .shadow(color: Color.cardMint.opacity(0.15), radius: 12, x: 0, y: 4)
     }
 }
 
@@ -306,6 +604,92 @@ struct ImpactStatBlock: View {
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
+    }
+}
+
+// MARK: - Community Impact Widget
+
+struct CommunityImpactWidget: View {
+    private var stats: CommunityImpactStats { CommunityImpactStats.current }
+    
+    var body: some View {
+        VStack(spacing: 12) {
+            HStack {
+                Text("🏘️ Community Impact")
+                    .font(.stormHeadline)
+                    .foregroundColor(.textPrimary)
+                
+                Spacer()
+                
+                Text("Today")
+                    .font(.stormCaption)
+                    .foregroundColor(.textSecondary)
+            }
+            
+            HStack(spacing: 16) {
+                CommunityStatPill(
+                    value: stats.openMissions,
+                    label: "Open",
+                    icon: "clock.fill",
+                    color: .statusWarning
+                )
+                
+                CommunityStatPill(
+                    value: stats.completedToday,
+                    label: "Completed",
+                    icon: "checkmark.circle.fill",
+                    color: .statusOk
+                )
+                
+                CommunityStatPill(
+                    value: stats.stormCheckInsCompleted,
+                    label: "Check-Ins",
+                    icon: "person.wave.2.fill",
+                    color: .cardLavender
+                )
+            }
+        }
+        .padding(16)
+        .background(
+            LinearGradient(
+                colors: [Color.cardMint.opacity(0.1), Color.cardBlue.opacity(0.1)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .cornerRadius(20)
+        .overlay(
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(Color.cardMint.opacity(0.3), lineWidth: 1)
+        )
+    }
+}
+
+struct CommunityStatPill: View {
+    let value: Int
+    let label: String
+    let icon: String
+    let color: Color
+    
+    var body: some View {
+        VStack(spacing: 6) {
+            HStack(spacing: 4) {
+                Image(systemName: icon)
+                    .font(.caption)
+                    .foregroundColor(color)
+                Text("\(value)")
+                    .font(.stormTitle3)
+                    .foregroundColor(.textPrimary)
+            }
+            
+            Text(label)
+                .font(.system(size: 9, weight: .medium))
+                .foregroundColor(.textSecondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 10)
+        .background(Color.white.opacity(0.6))
+        .cornerRadius(12)
     }
 }
 
@@ -367,6 +751,14 @@ struct ActiveTripCard: View {
     var onStart: () -> Void
     var onComplete: () -> Void
     var onCancel: () -> Void
+    var onFail: ((String) -> Void)? = nil
+    
+    @State private var showFailSheet = false
+    @State private var failReason = ""
+    
+    private var isStormMission: Bool {
+        request.type == .stormCheckIn
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -383,9 +775,22 @@ struct ActiveTripCard: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(patientName)
-                        .font(.stormHeadline)
-                        .foregroundColor(.textPrimary)
+                    HStack(spacing: 6) {
+                        Text(patientName)
+                            .font(.stormHeadline)
+                            .foregroundColor(.textPrimary)
+                        
+                        // Storm badge
+                        if isStormMission {
+                            Text("🌀 STORM")
+                                .font(.system(size: 9, weight: .bold))
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.stormActive)
+                                .cornerRadius(4)
+                        }
+                    }
                     
                     Text(request.type.displayName)
                         .font(.stormCaption)
@@ -476,27 +881,134 @@ struct ActiveTripCard: View {
                     }
                 }
                 
-                Button(action: onCancel) {
-                    Text("Cancel")
-                        .font(.stormCaptionBold)
-                        .foregroundColor(.statusUrgent)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 12)
-                        .background(Color.statusUrgent.opacity(0.1))
-                        .cornerRadius(12)
+                // Can't Complete button (only when in progress)
+                if request.status == .inProgress && onFail != nil {
+                    Button(action: { showFailSheet = true }) {
+                        Text("Can't Complete")
+                            .font(.stormCaptionBold)
+                            .foregroundColor(.statusUrgent)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 12)
+                            .background(Color.statusUrgent.opacity(0.1))
+                            .cornerRadius(12)
+                    }
+                } else {
+                    Button(action: onCancel) {
+                        Text("Cancel")
+                            .font(.stormCaptionBold)
+                            .foregroundColor(.statusUrgent)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 12)
+                            .background(Color.statusUrgent.opacity(0.1))
+                            .cornerRadius(12)
+                    }
                 }
             }
         }
         .padding(16)
         .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.white)
-                .shadow(color: request.status == .inProgress ? Color.stormActive.opacity(0.2) : Color.black.opacity(0.06), radius: 12, x: 0, y: 4)
+            LinearGradient(
+                colors: isStormMission 
+                    ? [Color(hex: "F0EDFF"), Color(hex: "EAE6FF")]
+                    : [Color(hex: "FFFBF5"), Color(hex: "FFF8EE")],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
         )
+        .cornerRadius(20)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
-                .stroke(request.status == .inProgress ? Color.stormActive.opacity(0.3) : Color.clear, lineWidth: 2)
+                .stroke(isStormMission ? Color.stormActive.opacity(0.5) : (request.status == .inProgress ? Color.cardYellow.opacity(0.5) : Color(hex: "F5EEE0")), lineWidth: 1.5)
         )
+        .shadow(color: isStormMission ? Color.stormActive.opacity(0.15) : Color.cardYellow.opacity(0.15), radius: 10, x: 0, y: 4)
+        .sheet(isPresented: $showFailSheet) {
+            FailMissionSheet(
+                patientName: patientName,
+                reason: $failReason,
+                onSubmit: {
+                    onFail?(failReason.isEmpty ? "Unable to complete" : failReason)
+                    showFailSheet = false
+                    failReason = ""
+                },
+                onCancel: { showFailSheet = false }
+            )
+            .presentationDetents([.height(300)])
+        }
+    }
+}
+
+// MARK: - Fail Mission Sheet
+
+struct FailMissionSheet: View {
+    let patientName: String
+    @Binding var reason: String
+    var onSubmit: () -> Void
+    var onCancel: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            // Header
+            HStack {
+                Text("Can't Complete Mission")
+                    .font(.stormTitle3)
+                    .foregroundColor(.textPrimary)
+                Spacer()
+                Button(action: onCancel) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title2)
+                        .foregroundColor(.textLight)
+                }
+            }
+            
+            Text("Let the clinic know why you couldn't complete the visit for \(patientName).")
+                .font(.stormCaption)
+                .foregroundColor(.textSecondary)
+            
+            // Reason input
+            TextField("Reason (e.g., no answer, wrong address)", text: $reason)
+                .font(.stormBody)
+                .padding()
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(12)
+            
+            // Quick reasons
+            HStack(spacing: 8) {
+                QuickReasonButton(text: "No answer", selection: $reason)
+                QuickReasonButton(text: "Wrong address", selection: $reason)
+                QuickReasonButton(text: "Not home", selection: $reason)
+            }
+            
+            Spacer()
+            
+            // Submit
+            Button(action: onSubmit) {
+                Text("Report & Notify Clinic")
+                    .font(.stormCaptionBold)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(Color.statusUrgent)
+                    .cornerRadius(12)
+            }
+        }
+        .padding(20)
+    }
+}
+
+struct QuickReasonButton: View {
+    let text: String
+    @Binding var selection: String
+    
+    var body: some View {
+        Button(action: { selection = text }) {
+            Text(text)
+                .font(.stormFootnote)
+                .foregroundColor(selection == text ? .white : .textSecondary)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(selection == text ? Color.stormActive : Color.gray.opacity(0.1))
+                .cornerRadius(8)
+        }
     }
 }
 
@@ -550,6 +1062,10 @@ struct OpenRequestCard: View {
     var onAccept: () -> Void
     var onTap: () -> Void
     
+    private var isStormMission: Bool {
+        request.type == .stormCheckIn
+    }
+    
     var body: some View {
         Button(action: onTap) {
             HStack(spacing: 12) {
@@ -566,9 +1082,22 @@ struct OpenRequestCard: View {
                 
                 // Info
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(patientName)
-                        .font(.stormHeadline)
-                        .foregroundColor(.textPrimary)
+                    HStack(spacing: 6) {
+                        Text(patientName)
+                            .font(.stormHeadline)
+                            .foregroundColor(.textPrimary)
+                        
+                        // Storm badge
+                        if isStormMission {
+                            Text("🌀 STORM")
+                                .font(.system(size: 9, weight: .bold))
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.stormActive)
+                                .cornerRadius(4)
+                        }
+                    }
                     
                     Text(request.dropoffLocation)
                         .font(.stormCaption)
@@ -593,18 +1122,31 @@ struct OpenRequestCard: View {
                         .foregroundColor(.white)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 10)
-                        .background(Color.statusOk)
+                        .background(isStormMission ? Color.stormActive : Color.statusOk)
                         .cornerRadius(10)
                 }
             }
             .padding(14)
-            .background(Color.white)
+            .background(
+                LinearGradient(
+                    colors: isStormMission 
+                        ? [Color(hex: "F0EDFF"), Color(hex: "EBE7FF")]
+                        : [Color(hex: "FAFAFA"), Color(hex: "F5F5F5")],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
             .cornerRadius(16)
-            .cardShadow()
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(isStormMission ? Color.stormActive.opacity(0.4) : Color.gray.opacity(0.15), lineWidth: 1)
+            )
+            .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 3)
         }
         .buttonStyle(PlainButtonStyle())
     }
 }
+
 
 // MARK: - Completed Trip Card
 

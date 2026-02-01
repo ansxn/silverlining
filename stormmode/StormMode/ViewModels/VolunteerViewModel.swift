@@ -9,6 +9,7 @@ class VolunteerViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     
     private let dataService = MockDataService.shared
+    private let missionService = MockMissionService.shared
     private var cancellables = Set<AnyCancellable>()
     
     var volunteerId: String {
@@ -49,14 +50,14 @@ class VolunteerViewModel: ObservableObject {
     }
     
     func loadData() {
-        openRequests = dataService.openRequests()
+        openRequests = missionService.openMissions
         myAssignedRequests = dataService.requestsForVolunteer(volunteerId)
     }
     
-    // MARK: - Actions
+    // MARK: - Mission Actions
     
     func acceptRequest(_ requestId: String) {
-        dataService.assignRequest(id: requestId, volunteerId: volunteerId)
+        missionService.acceptMission(id: requestId, by: volunteerId)
         loadData()
     }
     
@@ -68,12 +69,17 @@ class VolunteerViewModel: ObservableObject {
     }
     
     func completeTrip(_ requestId: String) {
-        dataService.completeRequest(id: requestId)
+        missionService.completeMission(id: requestId)
         loadData()
     }
     
     func cancelAssignment(_ requestId: String) {
         dataService.cancelRequest(id: requestId)
+        loadData()
+    }
+    
+    func failMission(_ requestId: String, reason: String) {
+        missionService.failMission(id: requestId, reason: reason)
         loadData()
     }
     
@@ -87,3 +93,4 @@ class VolunteerViewModel: ObservableObject {
         return "Patient"
     }
 }
+

@@ -37,7 +37,15 @@
 		00000037 /* StaffDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000038 /* StaffDashboardView.swift */; };
 		00000039 /* CreateReferralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000003A /* CreateReferralView.swift */; };
 		0000003B /* TasksListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000003C /* TasksListView.swift */; };
+		0000003D /* ResponderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000003E /* ResponderListView.swift */; };
 		3ED503892F2F253D0047CB12 /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED503882F2F253D0047CB12 /* OpenAIService.swift */; };
+		3ED5038B2F2F2FA80047CB12 /* MissionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED5038A2F2F2FA80047CB12 /* MissionService.swift */; };
+		3ED5038C2F2F30000047CB12 /* SmartMatchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED5038D2F2F30000047CB12 /* SmartMatchService.swift */; };
+		3ED5038D2F2F495C0047CB12 /* TwilioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED5038C2F2F495C0047CB12 /* TwilioService.swift */; };
+		3ED5038E2F2F31000047CB12 /* AutopilotService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED5038F2F2F31000047CB12 /* AutopilotService.swift */; };
+		3ED5038F2F2F49650047CB12 /* AIStormService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED5038E2F2F49650047CB12 /* AIStormService.swift */; };
+		3ED503902F2F31100047CB12 /* PlaybookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED503912F2F31100047CB12 /* PlaybookView.swift */; };
+		3ED503912F2F52C30047CB12 /* LandingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED503902F2F52C30047CB12 /* LandingPageView.swift */; };
 		58B741999AA5D56B059BAB51 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8B4EC69E7935D93D7F5663 /* WeatherService.swift */; };
 		62D94A7282260FDCB977F283 /* AIStormService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51534EB5A986A04D09562C19 /* AIStormService.swift */; };
 		99924FE1A928A64FCCCCB0F5 /* WeatherBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1E47B1A48D331D9E60E5B2 /* WeatherBackgroundView.swift */; };
@@ -75,8 +83,16 @@
 		00000038 /* StaffDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffDashboardView.swift; sourceTree = "<group>"; };
 		0000003A /* CreateReferralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReferralView.swift; sourceTree = "<group>"; };
 		0000003C /* TasksListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksListView.swift; sourceTree = "<group>"; };
+		0000003E /* ResponderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponderListView.swift; sourceTree = "<group>"; };
 		00000100 /* StormMode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StormMode.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ED503882F2F253D0047CB12 /* OpenAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
+		3ED5038A2F2F2FA80047CB12 /* MissionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionService.swift; sourceTree = "<group>"; };
+		3ED5038C2F2F495C0047CB12 /* TwilioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwilioService.swift; sourceTree = "<group>"; };
+		3ED5038D2F2F30000047CB12 /* SmartMatchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartMatchService.swift; sourceTree = "<group>"; };
+		3ED5038E2F2F49650047CB12 /* AIStormService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIStormService.swift; sourceTree = "<group>"; };
+		3ED5038F2F2F31000047CB12 /* AutopilotService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutopilotService.swift; sourceTree = "<group>"; };
+		3ED503902F2F52C30047CB12 /* LandingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageView.swift; sourceTree = "<group>"; };
+		3ED503912F2F31100047CB12 /* PlaybookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybookView.swift; sourceTree = "<group>"; };
 		51534EB5A986A04D09562C19 /* AIStormService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AIStormService.swift; path = StormMode/Services/AIStormService.swift; sourceTree = SOURCE_ROOT; };
 		6E8B4EC69E7935D93D7F5663 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WeatherService.swift; path = StormMode/Services/WeatherService.swift; sourceTree = SOURCE_ROOT; };
 		B6B248E1963F72D641CCBE84 /* StormThreatCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StormThreatCard.swift; path = StormMode/Views/Components/StormThreatCard.swift; sourceTree = SOURCE_ROOT; };
@@ -145,7 +161,12 @@
 		00000304 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				3ED5038E2F2F49650047CB12 /* AIStormService.swift */,
+				3ED5038C2F2F495C0047CB12 /* TwilioService.swift */,
+				3ED5038F2F2F31000047CB12 /* AutopilotService.swift */,
+				3ED5038A2F2F2FA80047CB12 /* MissionService.swift */,
 				3ED503882F2F253D0047CB12 /* OpenAIService.swift */,
+				3ED5038D2F2F30000047CB12 /* SmartMatchService.swift */,
 				0000001A /* MockDataService.swift */,
 			);
 			path = Services;
@@ -165,6 +186,7 @@
 		00000306 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3ED503902F2F52C30047CB12 /* LandingPageView.swift */,
 				00000308 /* Components */,
 				00000309 /* Patient */,
 				0000030A /* Volunteer */,
@@ -220,6 +242,8 @@
 				00000038 /* StaffDashboardView.swift */,
 				0000003A /* CreateReferralView.swift */,
 				0000003C /* TasksListView.swift */,
+				0000003E /* ResponderListView.swift */,
+				3ED503912F2F31100047CB12 /* PlaybookView.swift */,
 			);
 			path = ClinicStaff;
 			sourceTree = "<group>";
@@ -302,6 +326,7 @@
 				0000000D /* User.swift in Sources */,
 				0000000F /* Referral.swift in Sources */,
 				00000011 /* TransportRequest.swift in Sources */,
+				3ED5038B2F2F2FA80047CB12 /* MissionService.swift in Sources */,
 				00000013 /* Task.swift in Sources */,
 				00000015 /* StormState.swift in Sources */,
 				00000017 /* CheckIn.swift in Sources */,
@@ -317,16 +342,23 @@
 				0000002B /* ProgressBubbles.swift in Sources */,
 				0000002D /* CheckInCard.swift in Sources */,
 				0000002F /* PatientHomeView.swift in Sources */,
+				3ED503912F2F52C30047CB12 /* LandingPageView.swift in Sources */,
 				00000031 /* ReferralDetailView.swift in Sources */,
 				00000033 /* CreateRequestView.swift in Sources */,
 				00000035 /* VolunteerHomeView.swift in Sources */,
 				00000037 /* StaffDashboardView.swift in Sources */,
 				00000039 /* CreateReferralView.swift in Sources */,
 				0000003B /* TasksListView.swift in Sources */,
+				0000003D /* ResponderListView.swift in Sources */,
+				3ED5038C2F2F30000047CB12 /* SmartMatchService.swift in Sources */,
+				3ED5038E2F2F31000047CB12 /* AutopilotService.swift in Sources */,
+				3ED503902F2F31100047CB12 /* PlaybookView.swift in Sources */,
+				3ED5038F2F2F49650047CB12 /* AIStormService.swift in Sources */,
 				58B741999AA5D56B059BAB51 /* WeatherService.swift in Sources */,
 				62D94A7282260FDCB977F283 /* AIStormService.swift in Sources */,
 				99924FE1A928A64FCCCCB0F5 /* WeatherBackgroundView.swift in Sources */,
 				A5B44055BC1FB6009FB00B79 /* StormThreatCard.swift in Sources */,
+				3ED5038D2F2F495C0047CB12 /* TwilioService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

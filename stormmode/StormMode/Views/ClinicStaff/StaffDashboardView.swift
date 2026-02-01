@@ -7,6 +7,8 @@ struct StaffDashboardView: View {
     @ObservedObject var dataService = MockDataService.shared
     @State private var showCreateReferral = false
     @State private var showTasksList = false
+    @State private var showResponderList = false
+    @State private var showPlaybook = false
     @State private var selectedReferral: Referral?
     
     var body: some View {
@@ -58,7 +60,9 @@ struct StaffDashboardView: View {
                         // Quick Actions
                         StaffQuickActions(
                             onCreateReferral: { showCreateReferral = true },
-                            onShowTasks: { showTasksList = true }
+                            onShowTasks: { showTasksList = true },
+                            onShowResponders: { showResponderList = true },
+                            onShowPlaybook: { showPlaybook = true }
                         )
                         
                         // Urgent Tasks Preview
@@ -136,6 +140,12 @@ struct StaffDashboardView: View {
             .sheet(isPresented: $showTasksList) {
                 TasksListView()
             }
+            .sheet(isPresented: $showResponderList) {
+                ResponderListView()
+            }
+            .sheet(isPresented: $showPlaybook) {
+                PlaybookView()
+            }
             .sheet(item: $selectedReferral) { referral in
                 ReferralDetailView(referral: referral)
             }
@@ -190,9 +200,21 @@ struct StaffGreetingCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(20)
-        .background(Color.white)
+        .background(
+            LinearGradient(
+                colors: isStormMode 
+                    ? [Color(hex: "F0EDFF"), Color(hex: "EAE6FF")]
+                    : [Color(hex: "F4F8FF"), Color(hex: "EBF2FF")],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
         .cornerRadius(24)
-        .cardShadow()
+        .overlay(
+            RoundedRectangle(cornerRadius: 24)
+                .stroke(isStormMode ? Color.stormActive.opacity(0.3) : Color.cardBlue.opacity(0.2), lineWidth: 1)
+        )
+        .shadow(color: isStormMode ? Color.stormActive.opacity(0.15) : Color.cardBlue.opacity(0.1), radius: 10, x: 0, y: 4)
     }
 }
 
@@ -225,9 +247,19 @@ struct StaffProgressSection: View {
             ProgressBubbles(progress: closureRate)
         }
         .padding(20)
-        .background(Color.white)
+        .background(
+            LinearGradient(
+                colors: [Color(hex: "FFFBF0"), Color(hex: "FFF7E6")],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
         .cornerRadius(24)
-        .cardShadow()
+        .overlay(
+            RoundedRectangle(cornerRadius: 24)
+                .stroke(Color.cardYellow.opacity(0.3), lineWidth: 1)
+        )
+        .shadow(color: Color.cardYellow.opacity(0.15), radius: 10, x: 0, y: 4)
     }
 }
 
@@ -279,30 +311,104 @@ struct StaffAlertGrid: View {
 struct StaffQuickActions: View {
     var onCreateReferral: () -> Void
     var onShowTasks: () -> Void
+    var onShowResponders: () -> Void
+    var onShowPlaybook: () -> Void
     
     var body: some View {
-        HStack(spacing: 12) {
-            QuickActionCard(
-                title: "Create\nReferral",
-                icon: "plus.circle.fill",
-                color: .cardLavender,
-                action: onCreateReferral
-            )
+        VStack(alignment: .leading, spacing: 12) {
+            // Section header
+            HStack {
+                Image(systemName: "square.grid.2x2.fill")
+                    .font(.caption)
+                    .foregroundColor(.textLight)
+                Text("Quick Actions")
+                    .font(.stormCaptionBold)
+                    .foregroundColor(.textSecondary)
+            }
+            .padding(.bottom, 4)
             
-            QuickActionCard(
-                title: "View\nTasks",
-                icon: "checklist",
-                color: .cardMint,
-                action: onShowTasks
-            )
+            // Action buttons grid
+            HStack(spacing: 12) {
+                ActionButton(
+                    title: "Create\nReferral",
+                    icon: "plus.circle.fill",
+                    color: .cardLavender,
+                    action: onCreateReferral
+                )
+                
+                ActionButton(
+                    title: "View\nTasks",
+                    icon: "checklist",
+                    color: .cardMint,
+                    action: onShowTasks
+                )
+            }
             
-            QuickActionCard(
-                title: "Patient\nLookup",
-                icon: "person.crop.circle.fill",
-                color: .cardYellow,
-                action: {}
-            )
+            HStack(spacing: 12) {
+                ActionButton(
+                    title: "Responder\nNetwork",
+                    icon: "person.3.fill",
+                    color: .cardBlue,
+                    action: onShowResponders
+                )
+                
+                ActionButton(
+                    title: "Autopilot\nPlaybook",
+                    icon: "bolt.circle.fill",
+                    color: .stormActive,
+                    action: onShowPlaybook
+                )
+            }
         }
+    }
+}
+
+// MARK: - Action Button (distinct from MetricCard)
+
+struct ActionButton: View {
+    let title: String
+    let icon: String
+    let color: Color
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 10) {
+                ZStack {
+                    Circle()
+                        .fill(color.opacity(0.25))
+                        .frame(width: 44, height: 44)
+                    
+                    Image(systemName: icon)
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(color)
+                }
+                
+                Text(title)
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                
+                // Arrow indicator
+                Image(systemName: "arrow.up.right")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundColor(.textLight)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color.white.opacity(0.85))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(color.opacity(0.25), lineWidth: 1)
+            )
+            .shadow(color: Color.black.opacity(0.04), radius: 6, x: 0, y: 2)
+        }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -387,25 +493,28 @@ struct StaffStormThreatCard: View {
     @State private var showDetails = false
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(spacing: 0) {
+            // Main content
             HStack(spacing: 16) {
-                // Threat Ring
+                // Threat Ring - larger and cleaner
                 ThreatRingSimple(
                     score: aiService.stormThreatLevel?.overallScore ?? 0,
                     color: aiService.stormThreatLevel?.scoreColor ?? .statusOk
                 )
                 
-                // Info
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack {
-                        Text("🌀 Storm Threat")
+                // Center info
+                VStack(alignment: .leading, spacing: 6) {
+                    // Title row with badge
+                    HStack(spacing: 6) {
+                        Image(systemName: "tornado")
+                            .font(.body)
+                            .foregroundColor(.stormActive)
+                        
+                        Text("Storm Threat")
                             .font(.stormHeadline)
                             .foregroundColor(.textPrimary)
-                        
-                        if aiService.isAnalyzing {
-                            ProgressView()
-                                .scaleEffect(0.6)
-                        }
+                            .lineLimit(1)
+                            .fixedSize(horizontal: true, vertical: false)
                         
                         // AI Badge
                         if aiService.isUsingRealAI {
@@ -417,19 +526,27 @@ struct StaffStormThreatCard: View {
                                 .background(Color.cardLavender)
                                 .cornerRadius(4)
                         }
+                        
+                        if aiService.isAnalyzing {
+                            ProgressView()
+                                .scaleEffect(0.5)
+                        }
                     }
                     
                     if let threat = aiService.stormThreatLevel {
+                        // Score display
                         Text(String(format: "%.1f / 10", threat.overallScore))
-                            .font(.stormTitle3)
+                            .font(.system(size: 22, weight: .semibold, design: .rounded))
                             .foregroundColor(threat.scoreColor)
                         
-                        HStack(spacing: 8) {
+                        // Stats row - more compact
+                        HStack(spacing: 12) {
                             Label("\(threat.vulnerablePatientsCount) at risk", systemImage: "person.fill")
-                            Label("\(threat.atRiskAppointmentsCount) impacted", systemImage: "calendar")
+                            Label("\(threat.atRiskAppointmentsCount) appts", systemImage: "calendar")
                         }
-                        .font(.stormFootnote)
+                        .font(.system(size: 11))
                         .foregroundColor(.textSecondary)
+                        .lineLimit(1)
                     } else {
                         Text("Analyzing conditions...")
                             .font(.stormCaption)
@@ -437,79 +554,112 @@ struct StaffStormThreatCard: View {
                     }
                 }
                 
-                Spacer()
+                Spacer(minLength: 8)
                 
-                // Status badge
+                // Status badge - cleaner design
                 if let threat = aiService.stormThreatLevel {
                     VStack(spacing: 4) {
-                        Image(systemName: threat.recommendation.icon)
-                            .font(.title3)
-                            .foregroundColor(threat.recommendation.color)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(threat.recommendation.color.opacity(0.15))
+                                .frame(width: 52, height: 52)
+                            
+                            Image(systemName: threat.recommendation.icon)
+                                .font(.title3)
+                                .foregroundColor(threat.recommendation.color)
+                        }
                         
-                        Text(threat.recommendation.displayName)
+                        Text(threat.recommendation.shortName)
                             .font(.system(size: 9, weight: .semibold))
                             .foregroundColor(threat.recommendation.color)
-                            .multilineTextAlignment(.center)
+                            .lineLimit(1)
                     }
-                    .padding(8)
-                    .background(threat.recommendation.color.opacity(0.12))
-                    .cornerRadius(12)
+                    .frame(width: 60)
                 }
             }
+            .padding(16)
             
-            // AI Reasoning (when available)
+            // AI Analysis expandable section
             if aiService.isUsingRealAI, let reasoning = aiService.aiReasoning, !reasoning.isEmpty {
-                Button(action: { withAnimation { showDetails.toggle() } }) {
-                    HStack {
+                Divider()
+                    .padding(.horizontal, 16)
+                
+                Button(action: { withAnimation(.spring(response: 0.3)) { showDetails.toggle() } }) {
+                    HStack(spacing: 8) {
                         Image(systemName: "sparkles")
+                            .font(.subheadline)
                             .foregroundColor(.cardLavender)
+                        
                         Text(showDetails ? "Hide AI Analysis" : "View AI Analysis")
                             .font(.stormCaptionBold)
                             .foregroundColor(.cardLavender)
+                        
                         Spacer()
-                        Image(systemName: showDetails ? "chevron.up" : "chevron.down")
+                        
+                        Image(systemName: "chevron.down")
                             .font(.caption)
                             .foregroundColor(.cardLavender)
+                            .rotationEffect(.degrees(showDetails ? 180 : 0))
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
                 }
                 .buttonStyle(.plain)
                 
                 if showDetails {
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 10) {
                         Text(reasoning)
                             .font(.stormCaption)
                             .foregroundColor(.textSecondary)
+                            .lineSpacing(4)
                         
                         if !aiService.aiRecommendations.isEmpty {
-                            Text("Recommendations:")
+                            Divider()
+                            
+                            Text("Recommendations")
                                 .font(.stormCaptionBold)
                                 .foregroundColor(.textPrimary)
                             
-                            ForEach(aiService.aiRecommendations, id: \.self) { rec in
-                                HStack(alignment: .top, spacing: 6) {
-                                    Text("•")
-                                    Text(rec)
+                            VStack(alignment: .leading, spacing: 6) {
+                                ForEach(aiService.aiRecommendations, id: \.self) { rec in
+                                    HStack(alignment: .top, spacing: 8) {
+                                        Circle()
+                                            .fill(Color.cardLavender)
+                                            .frame(width: 5, height: 5)
+                                            .padding(.top, 6)
+                                        
+                                        Text(rec)
+                                            .font(.stormCaption)
+                                            .foregroundColor(.textSecondary)
+                                    }
                                 }
-                                .font(.stormCaption)
-                                .foregroundColor(.textSecondary)
                             }
                         }
                     }
-                    .padding(12)
-                    .background(Color.stormBackground.opacity(0.5))
-                    .cornerRadius(12)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 16)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
                 }
             }
         }
-        .padding(20)
         .frame(maxWidth: .infinity)
-        .background(Color.white)
+        .background(
+            LinearGradient(
+                colors: [Color(hex: "F8FBFF"), Color(hex: "F0F6FF")],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
         .cornerRadius(24)
-        .cardShadow()
+        .overlay(
+            RoundedRectangle(cornerRadius: 24)
+                .stroke(Color.cardBlue.opacity(0.15), lineWidth: 1)
+        )
+        .shadow(color: Color.cardBlue.opacity(0.1), radius: 12, x: 0, y: 4)
     }
 }
 
-// Simple threat ring for staff dashboard
+// Simple threat ring for staff dashboard - refined design
 struct ThreatRingSimple: View {
     let score: Double
     let color: Color
@@ -520,25 +670,32 @@ struct ThreatRingSimple: View {
     
     var body: some View {
         ZStack {
+            // Background ring
             Circle()
-                .stroke(color.opacity(0.2), lineWidth: 6)
+                .stroke(color.opacity(0.15), lineWidth: 8)
             
+            // Progress ring
             Circle()
                 .trim(from: 0, to: progress)
-                .stroke(color, style: StrokeStyle(lineWidth: 6, lineCap: .round))
+                .stroke(
+                    color,
+                    style: StrokeStyle(lineWidth: 8, lineCap: .round)
+                )
                 .rotationEffect(.degrees(-90))
+                .animation(.spring(response: 0.6), value: progress)
             
-            VStack(spacing: 0) {
+            // Score text
+            VStack(spacing: -2) {
                 Text(String(format: "%.1f", score))
-                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundColor(color)
                 
                 Text("/ 10")
-                    .font(.system(size: 8, weight: .medium))
+                    .font(.system(size: 10, weight: .medium))
                     .foregroundColor(.textLight)
             }
         }
-        .frame(width: 56, height: 56)
+        .frame(width: 72, height: 72)
     }
 }
 

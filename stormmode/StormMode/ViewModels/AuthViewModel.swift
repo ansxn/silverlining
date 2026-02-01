@@ -7,6 +7,7 @@ import Combine
 class AuthViewModel: ObservableObject {
     @Published var currentRole: UserRole = .clinicStaff
     @Published var isAuthenticated: Bool = true // Always true for demo
+    @Published var isOnboarded: Bool = false // Show landing page first
     
     private let dataService = MockDataService.shared
     

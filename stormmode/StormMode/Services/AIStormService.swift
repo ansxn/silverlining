@@ -638,6 +638,15 @@ enum StormRecommendation: String {
         }
     }
     
+    var shortName: String {
+        switch self {
+        case .activateNow: return "Activate!"
+        case .standby: return "Stand By"
+        case .monitor: return "Monitor"
+        case .allClear: return "All Clear"
+        }
+    }
+    
     var color: Color {
         switch self {
         case .activateNow: return .statusUrgent
