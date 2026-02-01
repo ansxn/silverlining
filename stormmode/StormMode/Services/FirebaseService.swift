@@ -368,4 +368,66 @@ class FirebaseService: ObservableObject {
         decoder.dateDecodingStrategy = .iso8601
         return try decoder.decode(type, from: jsonData)
     }
+    
+    // MARK: - Reset Demo Data
+    
+    /// Clears all Firebase collections for a fresh demo
+    @MainActor
+    func resetAllDemoData() async {
+        print("🧹 Resetting all demo data...")
+        
+        do {
+            // Delete all tasks
+            let tasksSnapshot = try await tasksCollection.getDocuments()
+            for doc in tasksSnapshot.documents {
+                try await tasksCollection.document(doc.documentID).delete()
+            }
+            print("✅ Deleted \(tasksSnapshot.documents.count) tasks")
+            
+            // Delete all referrals
+            let referralsSnapshot = try await referralsCollection.getDocuments()
+            for doc in referralsSnapshot.documents {
+                try await referralsCollection.document(doc.documentID).delete()
+            }
+            print("✅ Deleted \(referralsSnapshot.documents.count) referrals")
+            
+            // Delete all transport requests
+            let requestsSnapshot = try await transportRequestsCollection.getDocuments()
+            for doc in requestsSnapshot.documents {
+                try await transportRequestsCollection.document(doc.documentID).delete()
+            }
+            print("✅ Deleted \(requestsSnapshot.documents.count) transport requests")
+            
+            // Delete all check-ins
+            let checkInsSnapshot = try await checkInsCollection.getDocuments()
+            for doc in checkInsSnapshot.documents {
+                try await checkInsCollection.document(doc.documentID).delete()
+            }
+            print("✅ Deleted \(checkInsSnapshot.documents.count) check-ins")
+            
+            // Reset local data
+            let dataService = MockDataService.shared
+            dataService.tasks = []
+            dataService.referrals = []
+            dataService.requests = []
+            dataService.checkIns = []
+            
+            // Reset all volunteers to available (not on mission)
+            for i in 0..<dataService.volunteers.count {
+                if dataService.volunteers[i].availability == .onMission {
+                    dataService.volunteers[i].availability = .available
+                }
+            }
+            print("✅ Reset all volunteer availability")
+            
+            // Turn off storm mode
+            dataService.stormState = .default
+            
+            print("🎉 Demo data reset complete!")
+            
+        } catch {
+            print("❌ Error resetting demo data: \(error.localizedDescription)")
+        }
+    }
 }
+

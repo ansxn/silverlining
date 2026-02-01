@@ -46,10 +46,15 @@ struct CreateRequestView: View {
                             
                             TextField("Enter pickup address", text: $pickupLocation)
                                 .font(.stormBody)
+                                .foregroundColor(.textPrimary)
                         }
                         .padding(16)
-                        .background(Color.white)
+                        .background(Color(UIColor.systemBackground))
                         .cornerRadius(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                        )
                         .cardShadow()
                     }
                     
@@ -65,10 +70,15 @@ struct CreateRequestView: View {
                             
                             TextField(selectedType == .pharmacyPickup ? "Enter delivery address" : "Enter destination", text: $dropoffLocation)
                                 .font(.stormBody)
+                                .foregroundColor(.textPrimary)
                         }
                         .padding(16)
-                        .background(Color.white)
+                        .background(Color(UIColor.systemBackground))
                         .cornerRadius(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                        )
                         .cardShadow()
                     }
                     
@@ -85,9 +95,14 @@ struct CreateRequestView: View {
                             displayedComponents: [.date, .hourAndMinute]
                         )
                         .datePickerStyle(.graphical)
+                        .tint(.stormActive)
                         .padding(16)
-                        .background(Color.white)
+                        .background(Color(UIColor.systemBackground))
                         .cornerRadius(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                        )
                         .cardShadow()
                     }
                     
@@ -99,10 +114,16 @@ struct CreateRequestView: View {
                         
                         TextEditor(text: $notes)
                             .font(.stormBody)
+                            .foregroundColor(.textPrimary)
+                            .scrollContentBackground(.hidden)
                             .frame(minHeight: 80)
                             .padding(12)
-                            .background(Color.white)
+                            .background(Color(UIColor.systemBackground))
                             .cornerRadius(12)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                            )
                             .cardShadow()
                     }
                     

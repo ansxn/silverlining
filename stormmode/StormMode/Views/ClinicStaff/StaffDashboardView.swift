@@ -11,6 +11,8 @@ struct StaffDashboardView: View {
     @State private var showPlaybook = false
     @State private var showReferralsTracking = false
     @State private var showUnassignedRides = false
+    @State private var showResetConfirmation = false
+    @State private var isResetting = false
     @State private var selectedReferral: Referral?
     
     var body: some View {
@@ -132,11 +134,35 @@ struct StaffDashboardView: View {
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {}) {
-                        Image(systemName: "bell")
+                    Menu {
+                        Button(action: {}) {
+                            Label("Notifications", systemImage: "bell")
+                        }
+                        
+                        Divider()
+                        
+                        Button(role: .destructive, action: {
+                            showResetConfirmation = true
+                        }) {
+                            Label("Reset Demo Data", systemImage: "arrow.counterclockwise")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
                             .foregroundColor(.textPrimary)
                     }
                 }
+            }
+            .alert("Reset Demo Data?", isPresented: $showResetConfirmation) {
+                Button("Cancel", role: .cancel) { }
+                Button("Reset", role: .destructive) {
+                    Task {
+                        isResetting = true
+                        await FirebaseService.shared.resetAllDemoData()
+                        isResetting = false
+                    }
+                }
+            } message: {
+                Text("This will delete all tasks, referrals, transport requests, and check-ins from Firebase. Storm mode will be turned off.")
             }
             .sheet(isPresented: $showCreateReferral) {
                 CreateReferralView()

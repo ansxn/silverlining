@@ -218,7 +218,7 @@ extension Volunteer {
             phone: "+1234567895",
             zone: "East Side",
             tier: .trustedResponder,
-            availability: .onMission,
+            availability: .available,
             completedMissions: 89,
             acceptedMissions: 92
         ),
