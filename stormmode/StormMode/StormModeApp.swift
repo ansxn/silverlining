@@ -8,6 +8,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
         print("🔥 Firebase initialized successfully!")
+        
+        // Start real-time listeners
+        FirebaseService.shared.startRealTimeListeners()
+        
         return true
     }
 }
@@ -25,6 +29,10 @@ struct StormModeApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(authViewModel)
+                .task {
+                    // Load data from Firebase on app start
+                    await FirebaseService.shared.loadAllDataFromFirebase()
+                }
         }
     }
 }

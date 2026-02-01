@@ -3,7 +3,7 @@ import FirebaseCore
 import FirebaseFirestore
 
 // MARK: - Firebase Service
-// Handles all Firestore database operations
+// Handles all Firestore database operations with real-time sync
 
 class FirebaseService: ObservableObject {
     static let shared = FirebaseService()
@@ -19,6 +19,10 @@ class FirebaseService: ObservableObject {
     
     @Published var isConnected = false
     @Published var lastSyncTime: Date?
+    @Published var isLoading = false
+    
+    // Listener registrations (for cleanup)
+    private var listeners: [ListenerRegistration] = []
     
     private init() {
         // Test connection on init
@@ -43,6 +47,144 @@ class FirebaseService: ObservableObject {
                 }
             }
         }
+    }
+    
+    // MARK: - Load All Data From Firebase
+    
+    @MainActor
+    func loadAllDataFromFirebase() async {
+        print("📥 Loading data from Firebase...")
+        isLoading = true
+        
+        do {
+            // Fetch all data
+            let users = try await fetchUsers()
+            let referrals = try await fetchReferrals()
+            let requests = try await fetchTransportRequests()
+            let checkIns = try await fetchAllCheckIns()
+            let tasks = try await fetchTasks()
+            
+            // Update MockDataService with Firebase data
+            let dataService = MockDataService.shared
+            
+            if !users.isEmpty {
+                dataService.users = users
+                print("✅ Loaded \(users.count) users from Firebase")
+            }
+            
+            if !referrals.isEmpty {
+                dataService.referrals = referrals
+                print("✅ Loaded \(referrals.count) referrals from Firebase")
+            }
+            
+            if !requests.isEmpty {
+                dataService.requests = requests
+                print("✅ Loaded \(requests.count) transport requests from Firebase")
+            }
+            
+            if !checkIns.isEmpty {
+                dataService.checkIns = checkIns
+                print("✅ Loaded \(checkIns.count) check-ins from Firebase")
+            }
+            
+            if !tasks.isEmpty {
+                dataService.tasks = tasks
+                print("✅ Loaded \(tasks.count) tasks from Firebase")
+            }
+            
+            lastSyncTime = Date()
+            print("📥 Firebase data load complete!")
+            
+        } catch {
+            print("❌ Error loading from Firebase: \(error.localizedDescription)")
+        }
+        
+        isLoading = false
+    }
+    
+    // MARK: - Start Real-Time Listeners
+    
+    func startRealTimeListeners() {
+        print("🔄 Starting real-time Firebase listeners...")
+        
+        // Listen to tasks collection
+        let tasksListener = tasksCollection.addSnapshotListener { [weak self] snapshot, error in
+            guard let documents = snapshot?.documents else {
+                print("❌ Tasks listener error: \(error?.localizedDescription ?? "Unknown")")
+                return
+            }
+            
+            let tasks = documents.compactMap { doc in
+                try? self?.decodeFromFirestore(StormTask.self, document: doc)
+            }
+            
+            DispatchQueue.main.async {
+                if !tasks.isEmpty {
+                    MockDataService.shared.tasks = tasks
+                    print("🔄 Tasks updated from Firebase: \(tasks.count) items")
+                }
+            }
+        }
+        listeners.append(tasksListener)
+        
+        // Listen to referrals collection
+        let referralsListener = referralsCollection.addSnapshotListener { [weak self] snapshot, error in
+            guard let documents = snapshot?.documents else { return }
+            
+            let referrals = documents.compactMap { doc in
+                try? self?.decodeFromFirestore(Referral.self, document: doc)
+            }
+            
+            DispatchQueue.main.async {
+                if !referrals.isEmpty {
+                    MockDataService.shared.referrals = referrals
+                    print("🔄 Referrals updated from Firebase: \(referrals.count) items")
+                }
+            }
+        }
+        listeners.append(referralsListener)
+        
+        // Listen to transport requests collection
+        let requestsListener = transportRequestsCollection.addSnapshotListener { [weak self] snapshot, error in
+            guard let documents = snapshot?.documents else { return }
+            
+            let requests = documents.compactMap { doc in
+                try? self?.decodeFromFirestore(TransportRequest.self, document: doc)
+            }
+            
+            DispatchQueue.main.async {
+                if !requests.isEmpty {
+                    MockDataService.shared.requests = requests
+                    print("🔄 Transport requests updated from Firebase: \(requests.count) items")
+                }
+            }
+        }
+        listeners.append(requestsListener)
+        
+        // Listen to check-ins collection
+        let checkInsListener = checkInsCollection.addSnapshotListener { [weak self] snapshot, error in
+            guard let documents = snapshot?.documents else { return }
+            
+            let checkIns = documents.compactMap { doc in
+                try? self?.decodeFromFirestore(CheckIn.self, document: doc)
+            }
+            
+            DispatchQueue.main.async {
+                if !checkIns.isEmpty {
+                    MockDataService.shared.checkIns = checkIns
+                    print("🔄 Check-ins updated from Firebase: \(checkIns.count) items")
+                }
+            }
+        }
+        listeners.append(checkInsListener)
+        
+        print("✅ Real-time listeners active for: tasks, referrals, transport_requests, check_ins")
+    }
+    
+    func stopListeners() {
+        listeners.forEach { $0.remove() }
+        listeners.removeAll()
+        print("⏹️ Firebase listeners stopped")
     }
     
     // MARK: - Users
@@ -120,6 +262,13 @@ class FirebaseService: ObservableObject {
         let data = try encodeToFirestore(checkIn)
         try await checkInsCollection.document(checkIn.id).setData(data)
         print("✅ Saved check-in: \(checkIn.id)")
+    }
+    
+    func fetchAllCheckIns() async throws -> [CheckIn] {
+        let snapshot = try await checkInsCollection.getDocuments()
+        return snapshot.documents.compactMap { doc in
+            try? decodeFromFirestore(CheckIn.self, document: doc)
+        }
     }
     
     func fetchCheckIns(forPatient patientId: String) async throws -> [CheckIn] {
